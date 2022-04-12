@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import '../handlers/handlers.dart';
+import 'package:throtty/handlers/handlers.dart';
 
 GetIt locator = GetIt.instance;
 

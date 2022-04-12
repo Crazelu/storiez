@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ResponsiveWidget extends StatelessWidget {
+class BaseScaffold extends StatelessWidget {
   final Widget Function(Size size) builder;
   final Color? backgroundColor;
   final AppBar? appBar;
@@ -11,7 +11,7 @@ class ResponsiveWidget extends StatelessWidget {
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
 
-  const ResponsiveWidget({
+  const BaseScaffold({
     Key? key,
     required this.builder,
     this.appBar,
