@@ -1,85 +1,66 @@
-import 'dart:async';
-import '../models/dialog/dialog_request.dart';
+import 'package:flutter_dialog_manager/flutter_dialog_manager.dart';
+import 'package:flutter/material.dart';
 
+///An abstraction of [DialogManager] with no direct dependence on [BuildContext]
 abstract class DialogHandler {
-  void setIsDialogVisible(bool isDialogVisible);
-  void dismissDialog();
+  GlobalKey get dialogKey;
 
-  /// Registers a callback function to show the dialog
-  void registerDialogListener(Function(DialogRequest) showDialogListener);
-  void registerDismissDialogListener(Function dismissCurrentDialog);
-  void dialogComplete(bool response);
-  Future<bool> showDialog({
-    DialogType type = DialogType.error,
-    required String message,
-    bool autoDismiss = false,
+  /// Displays a dialog on screen.
+  ///
+  /// [routeName] is used to look up a dialog's implementation.
+  ///
+  /// [autoDismiss] when true, implies that the dialog will be shown on screen for [duration]
+  /// before being automatically dismissed.
+  ///
+  /// [barrierColor] -> Barrier colors of dialog. Defaults to [Colors.black38].
+  ///
+  /// [opaque] when true implies that [barrierColor] will take effect.
+  /// Otherwise, barrier will be transparent.
+  /// This might be helpful when there are multiple dialogs stacked on top of each other.
+  Future<Object?> showDialog({
+    String routeName = "/",
     Duration duration = const Duration(seconds: 3),
+    bool autoDismiss = true,
+    Object? arguments,
+    bool opaque = true,
+    Color? barrierColor,
   });
+
+  ///Dismisses current dialog
+  void dismissDialog([Object? result]);
 }
 
 class DialogHandlerImpl implements DialogHandler {
-  late Function(DialogRequest) _showDialogListener;
-  late Completer<bool> _dialogCompleter;
-  late Function _dismissCurrentDialog;
+  late GlobalKey _dialogKey;
 
-  Completer<bool> get dialogCompleter => _dialogCompleter;
-
-  bool _isDialogVisible = false;
-
-  /// Boolean reference which can be used to look up whether a dialog is on screen or not.
-  bool get isDialogVisible => _isDialogVisible;
-
-  void setIsDialogVisible(bool isDialogVisible) {
-    _isDialogVisible = isDialogVisible;
+  DialogHandlerImpl({GlobalKey? dialogKey}) {
+    _dialogKey = dialogKey ?? GlobalKey();
   }
 
-  void registerDialogListener(Function(DialogRequest) showDialogListener) {
-    _showDialogListener = showDialogListener;
+  @override
+  GlobalKey get dialogKey => _dialogKey;
+
+  @override
+  void dismissDialog([Object? result]) {
+    DialogManager.of(dialogKey.currentContext!).dismissDialog(result);
   }
 
-  /// Registers a callback function to dismiss the dialog
-  void registerDismissDialogListener(Function dismissCurrentDialog) {
-    _dismissCurrentDialog = dismissCurrentDialog;
-  }
-
-  /// Dismisses the dialog
-  void dismissDialog() {
-    _dismissCurrentDialog();
-  }
-
-  ///Dismisses any visible dialog
-  void _closeVisibleDialog() {
-    if (isDialogVisible) {
-      dismissDialog();
-    }
-  }
-
-  /// Calls the dialog listener and returns a Future that will wait for dialogComplete.
-  Future<bool> showDialog({
-    DialogType type = DialogType.error,
-    required String message,
-    bool autoDismiss = false,
-    Duration duration = const Duration(seconds: 3),
-  }) {
-    _dialogCompleter = Completer<bool>();
-    _closeVisibleDialog();
-    _showDialogListener(
-      DialogRequest(
-        message: message,
-        dialogType: type,
-        duration: duration,
-        autoDismiss: autoDismiss,
-      ),
+  @override
+  Future<Object?> showDialog({
+    String routeName = "/",
+    Duration duration = const Duration(milliseconds: 1500),
+    bool autoDismiss = true,
+    Object? arguments,
+    bool opaque = true,
+    Color? barrierColor,
+  }) async {
+    return DialogManager.of(dialogKey.currentContext!).showDialog(
+      routeName: routeName,
+      duration: duration,
+      autoDismiss: autoDismiss,
+      opaque: opaque,
+      barrierColor: barrierColor,
+      arguments: arguments,
     );
-
-    _isDialogVisible = true;
-    return _dialogCompleter.future;
-  }
-
-  /// Completes the _dialogCompleter to resume the Future's execution call
-  void dialogComplete(bool response) {
-    _isDialogVisible = false;
-    _dialogCompleter.complete(response);
-    _dialogCompleter = Completer<bool>();
   }
 }

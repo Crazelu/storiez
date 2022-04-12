@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../utils/utils.dart';
-import '../../handlers/handlers.dart';
 
 class ResponsiveWidget extends StatelessWidget {
   final Widget Function(Size size) builder;
@@ -35,7 +33,7 @@ class ResponsiveWidget extends StatelessWidget {
           if (onWillPop != null) {
             onWillPop!();
           } else {
-            locator<NavigationHandler>().goBack();
+            Navigator.of(context).pop();
           }
           return Future.value(false);
         },

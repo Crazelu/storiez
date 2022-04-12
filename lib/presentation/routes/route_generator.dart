@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/presentation/route/routes.dart';
+import '../../presentation/routes/routes.dart';
 
 class RouteGenerator {
   ///Generates routes, extracts and passes navigation arguments.

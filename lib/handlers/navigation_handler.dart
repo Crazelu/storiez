@@ -3,22 +3,30 @@ import 'package:flutter/services.dart';
 
 abstract class NavigationHandler {
   ///Pushes `destinationRoute` route onto the stack
-  Future<dynamic>? pushNamed(String destinationRoute, {dynamic arg});
+  Future<dynamic>? pushNamed(String destinationRoute, {Object? arguments});
 
   ///Pushes `destinationRoute` onto stack and removes stack items until
   ///`lastRoute` is hit
   Future<dynamic>? pushNamedAndRemoveUntil(
-      String destinationRoute, String lastRoute,
-      {dynamic arg});
+    String destinationRoute,
+    String lastRoute, {
+    Object? arguments,
+  });
 
   ///Pushes `destinationRoute` onto stack with replacement
-  Future<dynamic>? pushReplacementNamed(String destinationRoute, {dynamic arg});
+  Future<dynamic>? pushReplacementNamed(
+    String destinationRoute, {
+    Object? arguments,
+  });
 
   ///Pushes `destinationRoute` after popping current route off stack
-  Future<dynamic>? popAndPushNamed(String destinationRoute, {dynamic arg});
+  Future<dynamic>? popAndPushNamed(
+    String destinationRoute, {
+    Object? arguments,
+  });
 
   ///Pops current route off stack
-  void goBack();
+  void pop();
 
   ///Pops routes on stack until `destinationRoute` is hit
   void popUntil(String destinationRoute);
@@ -38,7 +46,7 @@ class NavigationHandlerImpl implements NavigationHandler {
     this.navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>();
   }
 
-  NavigatorState? get state => navigatorKey.currentState;
+  NavigatorState? get _state => navigatorKey.currentState;
 
   @override
   void exitApp() {
@@ -46,49 +54,49 @@ class NavigationHandlerImpl implements NavigationHandler {
   }
 
   @override
-  void goBack() {
-    if (state != null) {
-      return state!.pop();
-    }
+  void pop() {
+    return _state?.pop();
   }
 
   @override
-  Future? popAndPushNamed(String destinationRoute, {arg}) {
-    if (state != null) {
-      return state!.popAndPushNamed(destinationRoute, arguments: arg);
-    }
+  Future<Object?>? popAndPushNamed(
+    String destinationRoute, {
+    Object? arguments,
+  }) {
+    return _state?.popAndPushNamed(destinationRoute, arguments: arguments);
   }
 
   @override
   void popUntil(String destinationRoute) {
-    if (state != null) {
-      return state!.popUntil(ModalRoute.withName(destinationRoute));
-    }
+    return _state?.popUntil(ModalRoute.withName(destinationRoute));
   }
 
   @override
-  Future? pushNamed(String destinationRoute, {arg}) {
-    if (state != null) {
-      return state!.pushNamed(destinationRoute, arguments: arg);
-    }
+  Future<Object?>? pushNamed(
+    String destinationRoute, {
+    Object? arguments,
+  }) {
+    return _state?.pushNamed(destinationRoute, arguments: arguments);
   }
 
   @override
-  Future? pushNamedAndRemoveUntil(String destinationRoute, String lastRoute,
-      {arg}) {
-    if (state != null) {
-      return state!.pushNamedAndRemoveUntil(
-        destinationRoute,
-        ModalRoute.withName(lastRoute),
-        arguments: arg,
-      );
-    }
+  Future<Object?>? pushNamedAndRemoveUntil(
+    String destinationRoute,
+    String lastRoute, {
+    Object? arguments,
+  }) {
+    return _state?.pushNamedAndRemoveUntil(
+      destinationRoute,
+      ModalRoute.withName(lastRoute),
+      arguments: arguments,
+    );
   }
 
   @override
-  Future? pushReplacementNamed(String destinationRoute, {arg}) {
-    if (state != null) {
-      return state!.pushReplacementNamed(destinationRoute, arguments: arg);
-    }
+  Future<Object?>? pushReplacementNamed(
+    String destinationRoute, {
+    Object? arguments,
+  }) {
+    return _state?.pushReplacementNamed(destinationRoute, arguments: arguments);
   }
 }
