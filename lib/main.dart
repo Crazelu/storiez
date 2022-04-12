@@ -9,6 +9,7 @@ import '../../utils/locator.dart';
 import '../../presentation/themes/light_theme.dart';
 
 void main() {
+  setupLocator();
   runApp(App());
 }
 

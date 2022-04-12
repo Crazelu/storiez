@@ -16,6 +16,7 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   logger: ^1.0.0
   flutter_dialog_manager: ^1.0.0+4
+  gap: ^2.0.0
 
 dev_dependencies:
   flutter_test:
