@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/presentation/route/routes.dart';
 import 'presentation/shared/shared.dart';
 import 'presentation/themes/light_theme.dart';
 import 'utils/utils.dart';
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
         theme: lightTheme,
         navigatorKey: locator<NavigationHandler>().navigatorKey,
         onGenerateRoute: RouteGenerator.onGenerateRoute,
-        initialRoute: SplashScreenViewRoute,
+        initialRoute: Routes.splashScreenViewRoute,
         builder: (context, widget) => Navigator(
           onGenerateRoute: (settings) => CupertinoPageRoute(
             builder: (context) => DialogManager(
