@@ -16,6 +16,8 @@ dependencies:
   http: ^0.13.4
   dartz: ^0.10.1
   equatable: ^2.0.3
+  flutter_secure_storage: ^5.0.2
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

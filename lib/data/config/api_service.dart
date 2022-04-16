@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:throtty/data/local/local_cache.dart';
 import 'package:throtty/models/api/error/api_error_response.dart';
 import 'package:throtty/models/api/server_response.dart';
 import 'package:http/http.dart' as http;
@@ -16,11 +17,9 @@ abstract class ApiService {
   }
 
   Future<Map<String, dynamic>> _getAuthorizationHeader() async {
-    // final accessToken = await locator<LocalCache>().getToken();
-
+    final accessToken = await locator<LocalCache>().getToken();
     return {
-      "Authorization": "Bearer "
-      // + accessToken,
+      "Authorization": "Bearer " + accessToken,
     };
   }
 
