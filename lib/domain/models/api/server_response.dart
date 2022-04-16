@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:throtty/models/api/error/api_error_response.dart';
-import 'package:throtty/utils/parser_util.dart';
+import 'package:storiez/domain/models/api/error/api_error_response.dart';
+import 'package:storiez/utils/parser_util.dart';
 
 abstract class ServerResponse {}
 

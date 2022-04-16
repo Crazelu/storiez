@@ -1,5 +1,5 @@
-name: throtty
-description: A URL shortening utility.
+name: storiez
+description: A secret message sharing stories app.
 publish_to: 'none'
 version: 1.0.0+1
 

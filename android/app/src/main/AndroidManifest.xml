@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.throtty">
+    package="com.devcrazelu.storiez">
    <application
         android:label="throtty"
         android:name="${applicationName}"

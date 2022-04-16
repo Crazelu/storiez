@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:throtty/data/local/secure_storage.dart';
-import 'package:throtty/utils/logger.dart';
+import 'package:storiez/data/local/secure_storage.dart';
+import 'package:storiez/utils/logger.dart';
 
 class SecureStorageImpl implements SecureStorage {
   late FlutterSecureStorage _storage;

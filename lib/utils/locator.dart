@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:throtty/data/local/__local.dart';
-import 'package:throtty/handlers/handlers.dart';
+import 'package:storiez/data/local/__local.dart';
+import 'package:storiez/handlers/handlers.dart';
 
 GetIt locator = GetIt.instance;
 

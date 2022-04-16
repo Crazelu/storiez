@@ -1,5 +1,5 @@
-import 'package:throtty/models/api/error/api_error_type.dart';
-import 'package:throtty/utils/logger.dart';
+import 'package:storiez/domain/models/api/error/api_error_type.dart';
+import 'package:storiez/utils/logger.dart';
 
 class ParserUtil<T> {
   static DateTime parseJsonDate(String? dateString) {

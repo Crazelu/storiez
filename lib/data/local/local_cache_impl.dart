@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:throtty/data/local/local_cache.dart';
-import 'package:throtty/data/local/secure_storage.dart';
-import 'package:throtty/utils/logger.dart';
+import 'package:storiez/data/local/local_cache.dart';
+import 'package:storiez/data/local/secure_storage.dart';
+import 'package:storiez/utils/logger.dart';
 
 class LocalCacheImpl implements LocalCache {
   static const token = 'userToken';

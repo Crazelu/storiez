@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:throtty/handlers/handlers.dart';
-import 'package:throtty/utils/locator.dart';
+import 'package:storiez/handlers/handlers.dart';
+import 'package:storiez/utils/locator.dart';
 
 ///Base view model with shared dependencies injected.
 ///All view models must extends this class.

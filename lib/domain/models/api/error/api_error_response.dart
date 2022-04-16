@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:throtty/models/api/error/api_error_type.dart';
+import 'package:storiez/domain/models/api/error/api_error_type.dart';
 
 class ApiErrorResponse extends Equatable {
   final ApiErrorType type;

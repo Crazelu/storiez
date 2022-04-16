@@ -1,4 +1,4 @@
-package com.example.throtty
+package com.devcrazelu.storiez
 
 import io.flutter.embedding.android.FlutterActivity
 
