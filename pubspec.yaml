@@ -13,6 +13,9 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   flutter_dialog_manager: ^1.0.0+4
   gap: ^2.0.0
+  http: ^0.13.4
+  dartz: ^0.10.1
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:
