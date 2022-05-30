@@ -1,14 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:storiez/presentation/routes/routes.dart';
+import 'package:storiez/presentation/views/views.dart';
 
 class RouteGenerator {
   ///Generates routes, extracts and passes navigation arguments.
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.splashScreenViewRoute:
-        //TODO: Return Splash screen
-        return _getPageRoute(_errorPage());
+        return _getPageRoute(const SplashView());
+      case Routes.homeViewRoute:
+        return _getPageRoute(const HomeView());
+      case Routes.signupViewRoute:
+        return _getPageRoute(const SignupView());
+      case Routes.loginViewRoute:
+        return _getPageRoute(const LoginView());
 
       default:
         return _getPageRoute(_errorPage());
