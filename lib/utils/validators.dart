@@ -21,4 +21,15 @@ class Validators {
     }
     return null;
   }
+
+  static String? validateUsername(String? value) {
+    if (value == null) return null;
+    if (value.isEmpty) {
+      return 'Enter username';
+    }
+    if (value.length < 6) {
+      return 'Username must contain at least 6 characters';
+    }
+    return null;
+  }
 }

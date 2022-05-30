@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:storiez/handlers/navigation_handler.dart';
 import 'package:storiez/presentation/resources/app_assets.dart';
+import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
+import 'package:storiez/utils/locator.dart';
 import 'package:storiez/utils/validators.dart';
 
 class SignupView extends StatefulWidget {
@@ -12,11 +15,15 @@ class SignupView extends StatefulWidget {
 
 class _SignupViewState extends State<SignupView> {
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confrimPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      onWillPop: () {
+        locator<NavigationHandler>().exitApp();
+      },
       builder: (size) {
         return SizedBox(
           height: size.height,
@@ -24,7 +31,7 @@ class _SignupViewState extends State<SignupView> {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
-              const Gap(96),
+              const Gap(80),
               Align(
                 child: Column(
                   children: [
@@ -33,7 +40,7 @@ class _SignupViewState extends State<SignupView> {
                       height: 80,
                       width: 80,
                     ),
-                    const Gap(16),
+                    const Gap(8),
                     CustomText.heading3(
                       text: "Hey there!\nLet's get you started",
                       textAlign: TextAlign.center,
@@ -44,6 +51,13 @@ class _SignupViewState extends State<SignupView> {
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       validator: Validators.validateEmail,
+                    ),
+                    const Gap(24),
+                    CustomTextField(
+                      hint: "Username",
+                      controller: _usernameController,
+                      keyboardType: TextInputType.name,
+                      validator: Validators.validateUsername,
                     ),
                     const Gap(24),
                     PasswordTextField(
@@ -73,20 +87,18 @@ class _SignupViewState extends State<SignupView> {
                       buttonText: "Signup",
                       onPressed: () {},
                     ),
-                    const Gap(32),
+                    const Gap(24),
                     const TextDivider(text: "You a Storiez stan?"),
-                    const Gap(32),
+                    const Gap(24),
                     CustomButton(
                       buttonText: "Login",
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed(
+                          Routes.loginViewRoute,
+                        );
+                      },
                     ),
                     const Gap(48),
-                    StoriezLogo(
-                      size: 50,
-                      spacing: 2,
-                      color: Colors.black.withOpacity(.2),
-                      textColor: Colors.black.withOpacity(.4),
-                    ),
                   ],
                 ),
               ),

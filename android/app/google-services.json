@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1081388109275",
+    "project_id": "storiez-a2b76",
+    "storage_bucket": "storiez-a2b76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081388109275:android:5996c0f8ab20535d3dabfe",
+        "android_client_info": {
+          "package_name": "com.devcrazelu.storiez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081388109275-j7igtrkk68afbdlhmf41bbrcudnrap1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjNlU-LizrUi0Bax_4berwH0T_Wf5buzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081388109275-j7igtrkk68afbdlhmf41bbrcudnrap1h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1081388109275-6facmp90etf1gi8isttgsu7nfcsqh0qt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.devcrazelu.storiez"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -15,7 +15,7 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed(Routes.homeViewRoute);
+        Navigator.of(context).pushReplacementNamed(Routes.signupViewRoute);
       }
     });
   }

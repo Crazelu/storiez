@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:storiez/handlers/handlers.dart';
 import 'package:storiez/presentation/resources/app_assets.dart';
+import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
+import 'package:storiez/utils/locator.dart';
 import 'package:storiez/utils/validators.dart';
 
 class LoginView extends StatefulWidget {
@@ -16,6 +19,9 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      onWillPop: () {
+        locator<NavigationHandler>().exitApp();
+      },
       builder: (size) {
         return SizedBox(
           height: size.height,
@@ -32,7 +38,7 @@ class _LoginViewState extends State<LoginView> {
                       height: 80,
                       width: 80,
                     ),
-                    const Gap(16),
+                    const Gap(8),
                     CustomText.heading3(
                       text: "Welcome back!\nLogin to your account",
                       textAlign: TextAlign.center,
@@ -57,12 +63,16 @@ class _LoginViewState extends State<LoginView> {
                       buttonText: "Login",
                       onPressed: () {},
                     ),
-                    const Gap(32),
+                    const Gap(24),
                     const TextDivider(text: "New to Storiez?"),
-                    const Gap(32),
+                    const Gap(24),
                     CustomButton(
                       buttonText: "Signup",
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed(
+                          Routes.signupViewRoute,
+                        );
+                      },
                     ),
                     const Gap(48),
                     StoriezLogo(

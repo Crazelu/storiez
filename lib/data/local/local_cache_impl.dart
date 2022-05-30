@@ -5,7 +5,10 @@ import 'package:storiez/data/local/secure_storage.dart';
 import 'package:storiez/utils/logger.dart';
 
 class LocalCacheImpl implements LocalCache {
-  static const token = 'userToken';
+  static const _userId = 'userId';
+  static const _privateKey = 'privateEncKey';
+  static const _publicKey = 'publicEncKey';
+  static const _savedStories = 'savedstories';
 
   late SecureStorage _storage;
   late SharedPreferences _sharedPreferences;
@@ -19,9 +22,9 @@ class LocalCacheImpl implements LocalCache {
   }
 
   @override
-  Future<void> deleteToken() async {
+  Future<void> deleteUserId() async {
     try {
-      await _storage.delete(token);
+      await _storage.delete(_userId);
     } catch (e) {
       AppLogger.log(e);
     }
@@ -38,8 +41,8 @@ class LocalCacheImpl implements LocalCache {
   }
 
   @override
-  Future<String> getToken() async {
-    return (await _storage.read(token)) ?? "";
+  Future<String> getUserId() async {
+    return (await _storage.read(_userId)) ?? "";
   }
 
   @override
@@ -48,9 +51,9 @@ class LocalCacheImpl implements LocalCache {
   }
 
   @override
-  Future<void> saveToken(String token) async {
+  Future<void> saveUserId(String userId) async {
     try {
-      await _storage.write(key: token, value: token);
+      await _storage.write(key: userId, value: userId);
     } catch (e) {
       AppLogger.log(e);
     }
@@ -82,6 +85,59 @@ class LocalCacheImpl implements LocalCache {
 
   @override
   Future<void> clearCache() async {
-    await _storage.delete(token);
+    await _storage.delete(_userId);
+    await _storage.delete(_privateKey);
+    await _storage.delete(_publicKey);
+  }
+
+  @override
+  Future<String> getPrivateKey() async {
+    return (await _storage.read(_privateKey)) ?? "";
+  }
+
+  @override
+  Future<String> getPublicKey() async {
+    return (await _storage.read(_publicKey)) ?? "";
+  }
+
+  @override
+  Future<void> saveKeys({
+    required String privateKey,
+    required String publicKey,
+  }) async {
+    try {
+      await _storage.write(key: _privateKey, value: privateKey);
+      await _storage.write(key: _publicKey, value: publicKey);
+    } catch (e) {
+      AppLogger.log(e);
+    }
+  }
+
+  @override
+  Future<void> saveStory({
+    required String id,
+    required String uploadTime,
+  }) async {
+    try {
+      final stories = await getSavedStories();
+      stories.add({
+        "id": id,
+        "uploadTime": uploadTime,
+      });
+
+      await _sharedPreferences.setString(_savedStories, jsonEncode(stories));
+    } catch (e) {
+      AppLogger.log(e);
+    }
+  }
+
+  @override
+  Future<List<Map<String, String>>> getSavedStories() async {
+    try {
+      final data = getFromLocalCache(_savedStories) as String? ?? "[]";
+      return List<Map<String, String>>.from(jsonDecode(data));
+    } catch (e) {
+      return [];
+    }
   }
 }
