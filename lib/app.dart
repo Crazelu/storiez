@@ -24,6 +24,7 @@ class App extends StatelessWidget {
         theme: lightTheme.copyWith(
           textTheme: GoogleFonts.notoSansTextTheme(lightTheme.textTheme),
         ),
+        scaffoldMessengerKey: locator<SnackbarHandler>().key,
         navigatorKey: locator<NavigationHandler>().navigatorKey,
         onGenerateRoute: RouteGenerator.onGenerateRoute,
         initialRoute: Routes.splashScreenViewRoute,

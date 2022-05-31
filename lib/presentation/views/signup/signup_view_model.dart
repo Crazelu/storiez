@@ -2,18 +2,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
 
-final loginViewModelProvider = ChangeNotifierProvider((_) {
-  return LoginViewModel();
+final signupViewModelProvider = ChangeNotifierProvider((_) {
+  return SignupViewModel();
 });
 
-class LoginViewModel extends BaseViewModel {
-  Future<void> login({
+class SignupViewModel extends BaseViewModel {
+  Future<void> signup({
     required String email,
+    required String username,
     required String password,
   }) async {
     try {
       toggleLoading(true);
-      await apiService.login(email: email, password: password);
+      await apiService.signUp(
+        email: email,
+        password: password,
+        username: username,
+      );
       toggleLoading(false);
       navigationHandler.pushReplacementNamed(Routes.homeViewRoute);
     } catch (e) {

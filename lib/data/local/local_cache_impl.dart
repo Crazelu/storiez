@@ -53,7 +53,7 @@ class LocalCacheImpl implements LocalCache {
   @override
   Future<void> saveUserId(String userId) async {
     try {
-      await _storage.write(key: userId, value: userId);
+      await _storage.write(key: _userId, value: userId);
     } catch (e) {
       AppLogger.log(e);
     }

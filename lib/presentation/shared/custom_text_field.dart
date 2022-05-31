@@ -42,7 +42,7 @@ class CustomTextField extends StatelessWidget {
       cursorColor: Colors.black,
       style: const TextStyle(
         fontSize: 14,
-        color: Colors.black54,
+        color: Colors.black87,
       ),
       textInputAction: textInputAction,
       autovalidateMode: AutovalidateMode.disabled,
@@ -62,11 +62,11 @@ class CustomTextField extends StatelessWidget {
         suffixIcon: suffix,
         labelStyle: const TextStyle(
           fontSize: 16,
-          color: Colors.black54,
+          color: Colors.black87,
         ),
         hintStyle: const TextStyle(
           fontSize: 14,
-          color: Colors.black54,
+          color: Colors.black87,
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -83,6 +83,18 @@ class CustomTextField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black.withOpacity(.5),
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).errorColor,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).errorColor,
           ),
           borderRadius: BorderRadius.circular(5),
         ),
