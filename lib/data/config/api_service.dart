@@ -36,4 +36,10 @@ abstract class ApiService {
     required String documentReferenceId,
     required String publicKey,
   });
+
+  ///Deletes story with [imageUrl]
+  Future<void> deleteStory(String imageUrl);
+
+  ///Downloads image from [imageUrl]
+  Future<File?> downloadImage(String imageUrl);
 }

@@ -8,7 +8,8 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: Palette.primaryColor,
     foregroundColor: Palette.primaryColorLight,
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Palette.primaryColor.withOpacity(.77),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Palette.primaryColorLight,
+    foregroundColor: Palette.primaryColor,
   ),
 );

@@ -31,7 +31,7 @@ class HomeDrawer extends StatelessWidget {
                 CustomText.heading3(text: user.username),
                 const Gap(8),
                 CustomText.regular(text: user.email),
-                const Gap(32),
+                const Gap(24),
                 TextButton.icon(
                   onPressed: () {
                     ref.read(homeViewModelProvider).logout();
@@ -46,7 +46,7 @@ class HomeDrawer extends StatelessWidget {
                   ),
                 ),
               },
-              const Spacer(flex: 5),
+              const Spacer(flex: 2),
               StoriezLogo(
                 size: 50,
                 textSize: 14,

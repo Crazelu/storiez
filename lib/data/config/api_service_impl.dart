@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:steganograph/steganograph.dart';
 import 'package:storiez/data/config/api_service.dart';
 import 'package:storiez/data/local/__local.dart';
@@ -10,6 +11,7 @@ import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/utils/utils.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class ApiServiceImpl implements ApiService {
   late LocalCache _localCache;
@@ -172,11 +174,14 @@ class ApiServiceImpl implements ApiService {
   @override
   Future<String> uploadImage(File image) async {
     try {
-      var uuid = const Uuid().v1();
+      AppLogger.log("Start image upload");
+      final uuid = const Uuid().v1();
       final ref = _storageInstance.ref('images/$uuid.png');
-      final upload = ref.putFile(image);
+      await ref.putFile(image);
 
-      return await (await upload).ref.getDownloadURL();
+      AppLogger.log("Getting download link");
+
+      return await ref.getDownloadURL();
     } catch (e) {
       AppLogger.log(e);
       throw const ApiErrorResponse(message: "Image upload failed");
@@ -253,6 +258,46 @@ class ApiServiceImpl implements ApiService {
       );
     } catch (e) {
       AppLogger.log(e);
+    }
+  }
+
+  @override
+  Future<void> deleteStory(String imageUrl) async {
+    try {
+      final ref = _firestoreInstance
+          .collection(_storiesCollection)
+          .where("imageUrl", isEqualTo: imageUrl);
+
+      final documentId = await ref.get().then((value) => value.docs.first.id);
+
+      await _firestoreInstance
+          .collection(_storiesCollection)
+          .doc(documentId)
+          .delete();
+    } catch (e) {
+      AppLogger.log(e);
+      throw const ApiErrorResponse(message: "Unable to delete story");
+    }
+  }
+
+  @override
+  Future<File?> downloadImage(String imageUrl) async {
+    try {
+      AppLogger.log("Starting image download");
+      final response = await http.get(Uri.parse(imageUrl));
+      final imageBytes = response.bodyBytes;
+      final dir = await getApplicationDocumentsDirectory();
+      final uuid = const Uuid().v1();
+      final imageDirPath = dir.path + "/images";
+      final downloadedImageFilePath = imageDirPath + "/$uuid.png";
+      await Directory(imageDirPath).create(recursive: true);
+      final file = File(downloadedImageFilePath);
+      await file.writeAsBytes(imageBytes);
+      AppLogger.log("Image downloaded to " + file.path);
+      return file;
+    } catch (e) {
+      AppLogger.log(e);
+      throw const ApiErrorResponse(message: "Image download failed");
     }
   }
 }

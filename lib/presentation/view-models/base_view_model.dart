@@ -43,9 +43,13 @@ class BaseViewModel extends ChangeNotifier {
     snackbarHandler.showSnackbar(message);
   }
 
+  void showErrorSnackBar(String message) {
+    snackbarHandler.showErrorSnackbar(message);
+  }
+
   void handleError(Object e) {
     if (e is ApiErrorResponse) {
-      snackbarHandler.showErrorSnackbar(e.message);
+      showErrorSnackBar(e.message);
     }
     log(e);
   }

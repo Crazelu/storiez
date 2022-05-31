@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
@@ -37,7 +36,7 @@ class HomeViewModel extends BaseViewModel {
       _stream = apiService.getStories().listen(
         (stories) {
           _stories = stories;
-          notifyListeners();
+          toggleLoading(false);
         },
         onDone: () {
           toggleLoading(false);
