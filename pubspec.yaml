@@ -30,7 +30,7 @@ dependencies:
       ref: main
   
 dependency_overrides:
-  xml: ^6.0.0
+  xml: 6.0.0
   collection: ^1.16.0
 
 dev_dependencies:

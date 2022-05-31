@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:storiez/presentation/routes/routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/presentation/shared/shared.dart';
+import 'package:storiez/presentation/views/splash/splash_vew_model.dart';
 
-class SplashView extends StatefulWidget {
+class SplashView extends StatelessWidget {
   const SplashView({Key? key}) : super(key: key);
-
-  @override
-  State<SplashView> createState() => _SplashViewState();
-}
-
-class _SplashViewState extends State<SplashView> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed(Routes.signupViewRoute);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
       builder: (_) {
-        return const SizedBox.expand(
-          child: StoriezLogo(),
+        return SizedBox.expand(
+          child: Consumer(
+            builder: (_, ref, __) {
+              ref.read(splashViewModelProvider);
+              return const StoriezLogo();
+            },
+          ),
         );
       },
     );

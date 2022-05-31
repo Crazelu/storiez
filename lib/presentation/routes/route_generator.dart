@@ -5,7 +5,7 @@ import 'package:storiez/presentation/views/views.dart';
 
 class RouteGenerator {
   ///Generates routes, extracts and passes navigation arguments.
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+  static Route<Object?>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.splashScreenViewRoute:
         return _getPageRoute(const SplashView());
@@ -22,7 +22,7 @@ class RouteGenerator {
   }
 
   //Wraps widget with a CupertinoPageRoute and adds route settings
-  static CupertinoPageRoute _getPageRoute(
+  static CupertinoPageRoute<Object> _getPageRoute(
     Widget child, [
     String? routeName,
     dynamic args,

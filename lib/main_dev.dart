@@ -10,6 +10,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   AppLogger.configure(showLogs: true);
-  setupLocator();
+  await setupLocator();
   runApp(const App());
 }

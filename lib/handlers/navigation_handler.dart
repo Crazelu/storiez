@@ -3,24 +3,24 @@ import 'package:flutter/services.dart';
 
 abstract class NavigationHandler {
   ///Pushes `destinationRoute` route onto the stack
-  Future<dynamic>? pushNamed(String destinationRoute, {Object? arguments});
+  Future<Object?>? pushNamed(String destinationRoute, {Object? arguments});
 
   ///Pushes `destinationRoute` onto stack and removes stack items until
   ///`lastRoute` is hit
-  Future<dynamic>? pushNamedAndRemoveUntil(
+  Future<Object?>? pushNamedAndRemoveUntil(
     String destinationRoute,
     String lastRoute, {
     Object? arguments,
   });
 
   ///Pushes `destinationRoute` onto stack with replacement
-  Future<dynamic>? pushReplacementNamed(
+  Future<Object?>? pushReplacementNamed(
     String destinationRoute, {
     Object? arguments,
   });
 
   ///Pushes `destinationRoute` after popping current route off stack
-  Future<dynamic>? popAndPushNamed(
+  Future<Object?>? popAndPushNamed(
     String destinationRoute, {
     Object? arguments,
   });
