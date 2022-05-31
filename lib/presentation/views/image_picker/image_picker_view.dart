@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/presentation/resources/palette.dart';
+import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
 import 'package:storiez/presentation/views/image_picker/image_picker_view_model.dart';
 import 'package:storiez/presentation/views/image_picker/widgets/image_preview.dart';
@@ -34,11 +35,17 @@ class _ImagePickerViewState extends State<ImagePickerView> {
       ),
       floatingActionButton: Consumer(
         builder: (_, ref, __) {
-          if (ref.watch(imagePickerViewModelProvider).selectedImage == null) {
+          final image = ref.watch(imagePickerViewModelProvider).selectedImage;
+          if (image == null) {
             return const SizedBox();
           }
           return FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                Routes.newStoryViewRoute,
+                arguments: image,
+              );
+            },
             child: const RotatedBox(
               quarterTurns: 1,
               child: Icon(
@@ -83,6 +90,10 @@ class _ImagePickerViewState extends State<ImagePickerView> {
                               ref
                                   .read(imagePickerViewModelProvider)
                                   .setSelectedImage(file!);
+                              Navigator.of(context).pushNamed(
+                                Routes.newStoryViewRoute,
+                                arguments: file,
+                              );
                             },
                           );
                         },

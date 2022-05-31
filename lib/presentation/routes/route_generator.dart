@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:storiez/presentation/routes/routes.dart';
@@ -17,6 +19,16 @@ class RouteGenerator {
         return _getPageRoute(const LoginView());
       case Routes.imagePickerViewRoute:
         return _getPageRoute(const ImagePickerView());
+
+      case Routes.newStoryViewRoute:
+        final image = settings.arguments;
+        if (image != null && image is File) {
+          return _getPageRoute(
+            NewStoryView(image: image),
+          );
+        }
+
+        return _getPageRoute(_errorPage(message: "image not specified"));
 
       default:
         return _getPageRoute(_errorPage());
