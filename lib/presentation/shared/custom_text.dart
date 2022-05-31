@@ -122,6 +122,7 @@ class CustomText extends StatelessWidget {
     double? fontSize,
     double? height,
     TextAlign? textAlign,
+    FontWeight? fontWeight,
   }) {
     return CustomText(
       text: text,
@@ -130,6 +131,7 @@ class CustomText extends StatelessWidget {
         color: color,
         fontSize: fontSize,
         height: height,
+        fontWeight: fontWeight,
       ),
     );
   }
