@@ -17,8 +17,12 @@ class RouteGenerator {
         return _getPageRoute(const SignupView());
       case Routes.loginViewRoute:
         return _getPageRoute(const LoginView());
+
       case Routes.imagePickerViewRoute:
         return _getPageRoute(const ImagePickerView());
+
+      case Routes.addMessageViewRoute:
+        return _getPageRoute(const AddMessageView());
 
       case Routes.newStoryViewRoute:
         final image = settings.arguments;

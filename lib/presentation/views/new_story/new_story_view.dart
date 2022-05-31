@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/presentation/resources/palette.dart';
+import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
 import 'package:storiez/presentation/views/new_story/new_story_view_model.dart';
 
@@ -49,7 +50,10 @@ class _NewStoryViewState extends State<NewStoryView> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(Routes.addMessageViewRoute);
+                          },
                           child: const Icon(
                             PhosphorIcons.file_lock_light,
                             size: 24,

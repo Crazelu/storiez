@@ -5,4 +5,5 @@ class Routes {
   static const signupViewRoute = '/signup';
   static const imagePickerViewRoute = '/image-picker';
   static const newStoryViewRoute = '/new-story';
+  static const addMessageViewRoute = '/add-message';
 }

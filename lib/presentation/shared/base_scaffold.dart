@@ -41,6 +41,8 @@ class BaseScaffold extends StatelessWidget {
           onTap: () {
             if (onTap != null) {
               onTap!();
+            } else {
+              FocusScope.of(context).unfocus();
             }
           },
           child: Scaffold(
