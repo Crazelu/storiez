@@ -28,6 +28,10 @@ Future<void> setupLocator({String baseApi = ''}) async {
     () => ApiServiceImpl(localCache: locator()),
   );
 
+  locator.registerLazySingleton<ImagePickerService>(
+    () => ImagePickerServiceImpl(),
+  );
+
   //Handlers
   locator
       .registerLazySingleton<NavigationHandler>(() => NavigationHandlerImpl());

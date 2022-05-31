@@ -15,6 +15,8 @@ class RouteGenerator {
         return _getPageRoute(const SignupView());
       case Routes.loginViewRoute:
         return _getPageRoute(const LoginView());
+      case Routes.imagePickerViewRoute:
+        return _getPageRoute(const ImagePickerView());
 
       default:
         return _getPageRoute(_errorPage());

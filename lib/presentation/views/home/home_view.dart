@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
 
 class HomeView extends StatelessWidget {
@@ -13,7 +14,9 @@ class HomeView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.imagePickerViewRoute);
+        },
       ),
       builder: (size) {
         return const SizedBox.expand();
