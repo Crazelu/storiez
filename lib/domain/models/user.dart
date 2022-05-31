@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class AppUser extends Equatable {
+  final String docId;
   final String id;
   final String email;
   final String username;
@@ -11,14 +12,16 @@ class AppUser extends Equatable {
     required this.email,
     required this.username,
     required this.publicKey,
+    this.docId = "",
   });
 
-  factory AppUser.fromMap(Map<String, dynamic> data) {
+  factory AppUser.fromMap(Map<String, dynamic> data, [String docId = ""]) {
     return AppUser(
       id: data["id"] ?? "",
       email: data["email"] ?? "",
       username: data["username"] ?? "",
       publicKey: data["publicKey"] ?? "",
+      docId: docId,
     );
   }
 
@@ -31,8 +34,10 @@ class AppUser extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         email,
         username,
         publicKey,
+        docId,
       ];
 }

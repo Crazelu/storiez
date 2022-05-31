@@ -39,6 +39,24 @@ class ApiServiceImpl implements ApiService {
       if (user == null) throw const ApiErrorResponse(message: "Login failed");
 
       _localCache.saveUserId(user.uid);
+
+      final appUser = await getUser(user.uid);
+
+      if (appUser != null) {
+        //generate keypair
+        final keypair = Steganograph.generateKeypair();
+
+        await _localCache.saveKeys(
+          privateKey: keypair.privateKey,
+          publicKey: keypair.publicKey,
+        );
+
+        //update user
+        await updateUserPublicKey(
+          documentReferenceId: appUser.docId,
+          publicKey: keypair.publicKey,
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw const ApiErrorResponse(
@@ -198,5 +216,43 @@ class ApiServiceImpl implements ApiService {
             ),
           ),
         );
+  }
+
+  @override
+  Future<AppUser?> getUser(String userId) async {
+    try {
+      return await _firestoreInstance
+          .collection(_usersCollection)
+          .where("id", isEqualTo: userId)
+          .get()
+          .then(
+            (data) => AppUser.fromMap(
+              data.docs.first.data(),
+              data.docs.first.id,
+            ),
+          );
+    } catch (e) {
+      AppLogger.log(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<void> updateUserPublicKey({
+    required String documentReferenceId,
+    required String publicKey,
+  }) async {
+    try {
+      await _firestoreInstance
+          .collection(_usersCollection)
+          .doc(documentReferenceId)
+          .update(
+        {"publicKey": publicKey},
+      ).onError(
+        (error, stackTrace) => AppLogger.log(error),
+      );
+    } catch (e) {
+      AppLogger.log(e);
+    }
   }
 }
