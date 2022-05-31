@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/presentation/resources/palette.dart';
+import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
 import 'package:storiez/presentation/views/home/home_view_model.dart';
 
@@ -18,7 +19,7 @@ class HomeDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Gap(80),
-              if (user != null) ...{
+              if (user != null) ...[
                 CircleAvatar(
                   radius: 40,
                   child: CustomText.heading3(
@@ -34,6 +35,21 @@ class HomeDrawer extends StatelessWidget {
                 const Gap(24),
                 TextButton.icon(
                   onPressed: () {
+                    Navigator.of(context).popAndPushNamed(
+                      Routes.imagePickerViewRoute,
+                    );
+                  },
+                  icon: const Icon(
+                    PhosphorIcons.plus,
+                    color: Palette.primaryColor,
+                  ),
+                  label: CustomText.regular(
+                    text: "Add a new story",
+                    color: Palette.primaryColor,
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {
                     ref.read(homeViewModelProvider).logout();
                   },
                   icon: const Icon(
@@ -45,7 +61,7 @@ class HomeDrawer extends StatelessWidget {
                     color: Palette.faintRed,
                   ),
                 ),
-              },
+              ],
               const Spacer(flex: 2),
               StoriezLogo(
                 size: 50,

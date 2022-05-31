@@ -42,7 +42,7 @@ class StoryView extends StatelessWidget {
             },
           ),
           Positioned.fill(
-            bottom: size.height - 120,
+            bottom: size.height - 160,
             child: Consumer(builder: (_, ref, __) {
               final viewModel = ref.read(storyViewModelProvider);
               return Row(
@@ -75,7 +75,7 @@ class StoryView extends StatelessWidget {
                         child: const Icon(
                           PhosphorIcons.trash_simple,
                           size: 24,
-                          color: Palette.primaryColorLight,
+                          color: Palette.faintRed,
                         ),
                       );
                     }

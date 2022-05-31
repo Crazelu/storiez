@@ -19,12 +19,22 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Storiez"),
         centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed(Routes.imagePickerViewRoute);
-        },
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: FloatingActionButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  Routes.imagePickerViewRoute,
+                );
+              },
+            ),
+          ),
+        ],
       ),
       drawer: const HomeDrawer(),
       builder: (size) {

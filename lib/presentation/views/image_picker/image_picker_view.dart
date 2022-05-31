@@ -40,6 +40,7 @@ class _ImagePickerViewState extends State<ImagePickerView> {
             return const SizedBox();
           }
           return FloatingActionButton(
+            backgroundColor: Palette.primaryColor,
             onPressed: () {
               Navigator.of(context).pushNamed(
                 Routes.newStoryViewRoute,
@@ -50,6 +51,7 @@ class _ImagePickerViewState extends State<ImagePickerView> {
               quarterTurns: 1,
               child: Icon(
                 PhosphorIcons.paper_plane_light,
+                color: Palette.primaryColorLight,
               ),
             ),
           );
