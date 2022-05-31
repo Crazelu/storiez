@@ -42,4 +42,6 @@ abstract class ApiService {
 
   ///Downloads image from [imageUrl]
   Future<File?> downloadImage(String imageUrl);
+
+  Stream<List<AppUser>> getUsers();
 }

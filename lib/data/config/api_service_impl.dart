@@ -300,4 +300,17 @@ class ApiServiceImpl implements ApiService {
       throw const ApiErrorResponse(message: "Image download failed");
     }
   }
+
+  @override
+  Stream<List<AppUser>> getUsers() {
+    return _firestoreInstance.collection(_usersCollection).snapshots().map(
+          (snapshot) => List<AppUser>.from(
+            snapshot.docs.map(
+              (document) => AppUser.fromMap(
+                document.data(),
+              ),
+            ),
+          ),
+        );
+  }
 }

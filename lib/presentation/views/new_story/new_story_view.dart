@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:storiez/domain/models/secret_message.dart';
 import 'package:storiez/presentation/resources/palette.dart';
 import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
@@ -49,17 +50,29 @@ class _NewStoryViewState extends State<NewStoryView> {
                             color: Palette.primaryColorLight,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(Routes.addMessageViewRoute);
-                          },
-                          child: const Icon(
-                            PhosphorIcons.file_lock_light,
-                            size: 24,
-                            color: Palette.primaryColorLight,
-                          ),
-                        ),
+                        Consumer(builder: (_, ref, __) {
+                          return GestureDetector(
+                            onTap: () async {
+                              final secretMessage = await Navigator.of(context)
+                                  .pushNamed(Routes.addMessageViewRoute);
+
+                              if (secretMessage is SecretMessage) {
+                                ref.read(newStoryViewModelProvider).uploadStory(
+                                      image: widget.image,
+                                      caption: _captionController.text,
+                                      recipientPublicKey:
+                                          secretMessage.recipientPublicKey,
+                                      secretMessage: secretMessage.message,
+                                    );
+                              }
+                            },
+                            child: const Icon(
+                              PhosphorIcons.file_lock_light,
+                              size: 24,
+                              color: Palette.primaryColorLight,
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
