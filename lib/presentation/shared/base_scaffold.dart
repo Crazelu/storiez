@@ -4,7 +4,7 @@ class BaseScaffold extends StatelessWidget {
   final Widget Function(Size size) builder;
   final Color? backgroundColor;
   final AppBar? appBar;
-  final Drawer? drawer;
+  final Widget? drawer;
   final bool resizeToAvoidBottomInset;
   final Function? onWillPop;
   final Function? onTap;

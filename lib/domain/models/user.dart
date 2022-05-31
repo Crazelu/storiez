@@ -15,6 +15,8 @@ class AppUser extends Equatable {
     this.docId = "",
   });
 
+  String get initials => username.substring(0, 2).toUpperCase();
+
   factory AppUser.fromMap(Map<String, dynamic> data, [String docId = ""]) {
     return AppUser(
       id: data["id"] ?? "",

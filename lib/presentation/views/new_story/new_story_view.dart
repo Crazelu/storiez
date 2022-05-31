@@ -44,7 +44,7 @@ class _NewStoryViewState extends State<NewStoryView> {
                           },
                           child: const Icon(
                             PhosphorIcons.x,
-                            size: 32,
+                            size: 24,
                             color: Palette.primaryColorLight,
                           ),
                         ),
@@ -52,7 +52,7 @@ class _NewStoryViewState extends State<NewStoryView> {
                           onTap: () {},
                           child: const Icon(
                             PhosphorIcons.file_lock_light,
-                            size: 32,
+                            size: 24,
                             color: Palette.primaryColorLight,
                           ),
                         ),
