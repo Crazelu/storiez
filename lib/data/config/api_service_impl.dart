@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:steganograph/steganograph.dart';
 import 'package:storiez/data/config/api_service.dart';
 import 'package:storiez/data/local/__local.dart';
@@ -16,7 +15,6 @@ class ApiServiceImpl implements ApiService {
   late LocalCache _localCache;
   late final FirebaseAuth _authInstance = FirebaseAuth.instance;
   late final FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
-  late final FirebaseStorage _storageInstance = FirebaseStorage.instance;
   late ImageService _imageService;
   Timer? _timer;
 
@@ -201,13 +199,6 @@ class ApiServiceImpl implements ApiService {
     try {
       AppLogger.log("Start image upload");
       return await _imageService.uploadImage(image);
-      // final uuid = const Uuid().v1();
-      // final ref = _storageInstance.ref('images/$uuid.png');
-      // await ref.putFile(image);
-
-      // AppLogger.log("Getting download link");
-
-      // return await ref.getDownloadURL();
     } catch (e) {
       AppLogger.log(e);
       throw const ApiErrorResponse(message: "Image upload failed");
