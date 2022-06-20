@@ -3,24 +3,21 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:steganograph/steganograph.dart';
 import 'package:storiez/data/config/api_service.dart';
 import 'package:storiez/data/local/__local.dart';
-import 'package:storiez/data/remote/image_upload_service.dart';
+import 'package:storiez/data/remote/image_service.dart';
 import 'package:storiez/domain/models/api/error/api_error_response.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/utils/utils.dart';
-import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
 
 class ApiServiceImpl implements ApiService {
   late LocalCache _localCache;
   late final FirebaseAuth _authInstance = FirebaseAuth.instance;
   late final FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
   late final FirebaseStorage _storageInstance = FirebaseStorage.instance;
-  late ImageUploadService _imageUploadService;
+  late ImageService _imageService;
   Timer? _timer;
 
   static const _usersCollection = "users";
@@ -28,10 +25,10 @@ class ApiServiceImpl implements ApiService {
 
   ApiServiceImpl({
     required LocalCache localCache,
-    required ImageUploadService imageUploadService,
+    required ImageService imageService,
   }) {
     _localCache = localCache;
-    _imageUploadService = imageUploadService;
+    _imageService = imageService;
     _scheduleStoryDeletion();
   }
 
@@ -188,7 +185,7 @@ class ApiServiceImpl implements ApiService {
           documentRef.get().then((value) => remoteStory = value.data());
 
           if (remoteStory != null) {
-            await _imageUploadService.deleteImage(remoteStory!.imageUrl);
+            await _imageService.deleteImage(remoteStory!.imageUrl);
           }
 
           await documentRef.delete().onError((error, stackTrace) => null);
@@ -203,7 +200,7 @@ class ApiServiceImpl implements ApiService {
   Future<String> uploadImage(File image) async {
     try {
       AppLogger.log("Start image upload");
-      return await _imageUploadService.uploadImage(image);
+      return await _imageService.uploadImage(image);
       // final uuid = const Uuid().v1();
       // final ref = _storageInstance.ref('images/$uuid.png');
       // await ref.putFile(image);
@@ -311,23 +308,7 @@ class ApiServiceImpl implements ApiService {
 
   @override
   Future<File?> downloadImage(String imageUrl) async {
-    try {
-      AppLogger.log("Starting image download");
-      final response = await http.get(Uri.parse(imageUrl));
-      final imageBytes = response.bodyBytes;
-      final dir = await getApplicationDocumentsDirectory();
-      final uuid = const Uuid().v1();
-      final imageDirPath = dir.path + "/images";
-      final downloadedImageFilePath = imageDirPath + "/$uuid.png";
-      await Directory(imageDirPath).create(recursive: true);
-      final file = File(downloadedImageFilePath);
-      await file.writeAsBytes(imageBytes);
-      AppLogger.log("Image downloaded to " + file.path);
-      return file;
-    } catch (e) {
-      AppLogger.log(e);
-      throw const ApiErrorResponse(message: "Image download failed");
-    }
+    return await _imageService.downloadImage(imageUrl);
   }
 
   @override

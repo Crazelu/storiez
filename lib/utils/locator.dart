@@ -3,8 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storiez/data/config/api_service.dart';
 import 'package:storiez/data/config/api_service_impl.dart';
 import 'package:storiez/data/local/__local.dart';
-import 'package:storiez/data/remote/image_upload_service.dart';
-import 'package:storiez/data/remote/image_upload_service_impl.dart';
+import 'package:storiez/data/remote/image_service.dart';
+import 'package:storiez/data/remote/image_service_impl.dart';
 import 'package:storiez/handlers/handlers.dart';
 
 GetIt locator = GetIt.instance;
@@ -35,7 +35,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<ApiService>(
     () => ApiServiceImpl(
       localCache: locator(),
-      imageUploadService: locator(),
+      imageService: locator(),
     ),
   );
 
@@ -43,8 +43,8 @@ Future<void> setupLocator() async {
     () => ImagePickerServiceImpl(),
   );
 
-  locator.registerLazySingleton<ImageUploadService>(
-    () => ImageUploadServiceImpl(
+  locator.registerLazySingleton<ImageService>(
+    () => ImageServiceImpl(
       apiKey: cloudinaryApiKey,
       apiSecret: cloudinaryApiSecret,
       cloudName: cloudinaryCloudName,

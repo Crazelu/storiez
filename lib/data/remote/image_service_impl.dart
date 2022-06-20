@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:storiez/data/remote/image_upload_service.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:storiez/data/remote/image_service.dart';
 import 'package:storiez/domain/models/api/error/api_error_response.dart';
 import 'package:storiez/utils/utils.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
-class ImageUploadServiceImpl implements ImageUploadService {
+class ImageServiceImpl implements ImageService {
   late Cloudinary _cloudinaryInstance;
 
-  ImageUploadServiceImpl({
+  ImageServiceImpl({
     required String apiKey,
     required String apiSecret,
     required String cloudName,
@@ -57,4 +59,38 @@ class ImageUploadServiceImpl implements ImageUploadService {
       AppLogger.log(e);
     }
   }
+
+  @override
+  Future<File?> downloadImage(String imageUrl) async {
+    try {
+      final cachedFilePath = _imageCache[imageUrl];
+
+      if (cachedFilePath != null) {
+        AppLogger.log("Retrieved from cache");
+        return File(cachedFilePath);
+      }
+
+      AppLogger.log("Starting image download");
+      final response = await http.get(Uri.parse(imageUrl));
+      final imageBytes = response.bodyBytes;
+      final dir = await getApplicationDocumentsDirectory();
+      final uuid = const Uuid().v1();
+      final imageDirPath = dir.path + "/images";
+      final downloadedImageFilePath = imageDirPath + "/$uuid.png";
+      await Directory(imageDirPath).create(recursive: true);
+      final file = File(downloadedImageFilePath);
+      await file.writeAsBytes(imageBytes);
+      AppLogger.log("Image downloaded to " + file.path);
+      _imageCache[imageUrl] = file.path;
+      return file;
+    } catch (e) {
+      AppLogger.log(e);
+      throw const ApiErrorResponse(message: "Image download failed");
+    }
+  }
+
+  late final Map<String, String> _imageCache = {};
+
+  @override
+  Map<String, String> get imageCache => _imageCache;
 }
