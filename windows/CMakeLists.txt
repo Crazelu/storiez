@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(throtty LANGUAGES CXX)
+project(storiez LANGUAGES CXX)
 
-set(BINARY_NAME "throtty")
+set(BINARY_NAME "storiez")
 
 cmake_policy(SET CMP0063 NEW)
 

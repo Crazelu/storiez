@@ -22,7 +22,7 @@ class StoryViewModel extends BaseViewModel {
         image: imageFile!,
       );
 
-      log("MESSAGE: $message");
+      // log("MESSAGE: $message");
       return message;
     } catch (e, trace) {
       log(trace);
@@ -39,20 +39,22 @@ class StoryViewModel extends BaseViewModel {
     }
     try {
       final message = await _downloadImageAndDecode(story.imageUrl);
+
       log(message);
-      if (message == null || message.isNotEmpty) {
+      if (message == null || message.isEmpty) {
         _hasSecret = false;
         return false;
       }
 
-      final secret = jsonDecode(message) as Map<String, String>;
+      final secret = jsonDecode(message) as Map<String, dynamic>;
 
       log(secret);
 
-      final publicKey = await localCache.getPublicKey();
+      final currentUserId = await localCache.getUserId();
+      log(currentUserId);
 
       for (var key in secret.keys) {
-        if (key == publicKey) {
+        if (key == currentUserId) {
           _hasSecret = true;
           return true;
         }

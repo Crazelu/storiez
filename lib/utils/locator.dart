@@ -33,7 +33,10 @@ Future<void> setupLocator() async {
   );
 
   locator.registerLazySingleton<ApiService>(
-    () => ApiServiceImpl(localCache: locator()),
+    () => ApiServiceImpl(
+      localCache: locator(),
+      imageUploadService: locator(),
+    ),
   );
 
   locator.registerLazySingleton<ImagePickerService>(

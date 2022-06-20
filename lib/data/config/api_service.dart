@@ -44,4 +44,6 @@ abstract class ApiService {
   Future<File?> downloadImage(String imageUrl);
 
   Stream<List<AppUser>> getUsers();
+
+  void dispose();
 }

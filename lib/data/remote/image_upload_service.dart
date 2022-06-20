@@ -1,5 +1,7 @@
 import 'dart:io';
 
 abstract class ImageUploadService {
-  Future<bool> uploadImage(File image);
+  Future<String> uploadImage(File image);
+
+  Future<void> deleteImage(String url);
 }

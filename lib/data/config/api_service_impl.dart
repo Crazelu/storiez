@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:steganograph/steganograph.dart';
 import 'package:storiez/data/config/api_service.dart';
 import 'package:storiez/data/local/__local.dart';
+import 'package:storiez/data/remote/image_upload_service.dart';
 import 'package:storiez/domain/models/api/error/api_error_response.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
@@ -18,12 +20,33 @@ class ApiServiceImpl implements ApiService {
   late final FirebaseAuth _authInstance = FirebaseAuth.instance;
   late final FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
   late final FirebaseStorage _storageInstance = FirebaseStorage.instance;
+  late ImageUploadService _imageUploadService;
+  Timer? _timer;
 
   static const _usersCollection = "users";
   static const _storiesCollection = "stories";
 
-  ApiServiceImpl({required LocalCache localCache}) {
+  ApiServiceImpl({
+    required LocalCache localCache,
+    required ImageUploadService imageUploadService,
+  }) {
     _localCache = localCache;
+    _imageUploadService = imageUploadService;
+    _scheduleStoryDeletion();
+  }
+
+  void _scheduleStoryDeletion() {
+    try {
+      AppLogger.log("Scheduling story deletion job");
+      _timer = Timer.periodic(
+        const Duration(seconds: 30),
+        (timer) {
+          storyDeletionJob();
+        },
+      );
+    } catch (e) {
+      AppLogger.log(e);
+    }
   }
 
   @override
@@ -160,10 +183,15 @@ class ApiServiceImpl implements ApiService {
               minutes: 58,
             ))
             .isBefore(date)) {
-          await ref
-              .doc(story["id"]!)
-              .delete()
-              .onError((error, stackTrace) => null);
+          Story? remoteStory;
+          final documentRef = ref.doc(story["id"]!);
+          documentRef.get().then((value) => remoteStory = value.data());
+
+          if (remoteStory != null) {
+            await _imageUploadService.deleteImage(remoteStory!.imageUrl);
+          }
+
+          await documentRef.delete().onError((error, stackTrace) => null);
         }
       }
     } catch (e) {
@@ -175,13 +203,14 @@ class ApiServiceImpl implements ApiService {
   Future<String> uploadImage(File image) async {
     try {
       AppLogger.log("Start image upload");
-      final uuid = const Uuid().v1();
-      final ref = _storageInstance.ref('images/$uuid.png');
-      await ref.putFile(image);
+      return await _imageUploadService.uploadImage(image);
+      // final uuid = const Uuid().v1();
+      // final ref = _storageInstance.ref('images/$uuid.png');
+      // await ref.putFile(image);
 
-      AppLogger.log("Getting download link");
+      // AppLogger.log("Getting download link");
 
-      return await ref.getDownloadURL();
+      // return await ref.getDownloadURL();
     } catch (e) {
       AppLogger.log(e);
       throw const ApiErrorResponse(message: "Image upload failed");
@@ -312,5 +341,11 @@ class ApiServiceImpl implements ApiService {
             ),
           ),
         );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
   }
 }

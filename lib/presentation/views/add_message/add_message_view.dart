@@ -17,7 +17,7 @@ class AddMessageView extends StatefulWidget {
 }
 
 class _AddMessageViewState extends State<AddMessageView> {
-  ValueNotifier<AppUser?> _recipient = ValueNotifier(null);
+  final ValueNotifier<AppUser?> _recipient = ValueNotifier(null);
   final _messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -65,6 +65,7 @@ class _AddMessageViewState extends State<AddMessageView> {
                                     SecretMessage(
                                       message: _messageController.text,
                                       recipientPublicKey: recipient.publicKey,
+                                      recipientId: recipient.id,
                                     ),
                                   );
                                 }

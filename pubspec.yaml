@@ -30,9 +30,10 @@ dependencies:
   http: ^0.13.4
   cloudinary_sdk: ^4.0.1+9
   steganograph:
-    git:
-      url: git@github.com:Crazelu/steganograph.git
-      ref: main
+    path: ../steganography/
+    # git:
+    #   url: git@github.com:Crazelu/steganograph.git
+    #   ref: main
   
 dependency_overrides:
   xml: 6.0.0

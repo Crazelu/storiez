@@ -63,6 +63,7 @@ class _NewStoryViewState extends State<NewStoryView> {
                                       recipientPublicKey:
                                           secretMessage.recipientPublicKey,
                                       secretMessage: secretMessage.message,
+                                      recipientId: secretMessage.recipientId,
                                     );
                               }
                             },

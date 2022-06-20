@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:steganograph/steganograph.dart';
@@ -28,6 +29,7 @@ class NewStoryViewModel extends BaseViewModel {
 
   Future<void> uploadStory({
     required File image,
+    String? recipientId,
     String caption = "",
     String? recipientPublicKey,
     String? secretMessage,
@@ -47,6 +49,7 @@ class NewStoryViewModel extends BaseViewModel {
 
       encodedImage = await _writeSecretMessageToImage(
         image: image,
+        recipientId: recipientId,
         recipientPublicKey: recipientPublicKey,
         secretMessage: secretMessage,
       );
@@ -89,6 +92,7 @@ class NewStoryViewModel extends BaseViewModel {
 
   Future<File?> _writeSecretMessageToImage({
     required File image,
+    String? recipientId,
     String? recipientPublicKey,
     String? secretMessage,
   }) async {
@@ -103,6 +107,7 @@ class NewStoryViewModel extends BaseViewModel {
       return await Steganograph.encode(
         image: image,
         message: secretMessage,
+        unencryptedPrefix: recipientId,
         encryptionKey: recipientPublicKey,
         encryptionType: EncryptionType.asymmetric,
       );
