@@ -2,7 +2,6 @@ import 'package:steganograph/steganograph.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
-import 'package:storiez/utils/utils.dart';
 
 class StoryViewModel extends BaseViewModel {
   StoryViewModel() {

@@ -58,11 +58,16 @@ class ApiServiceImpl implements ApiService {
       final user = credential.user;
       if (user == null) throw const ApiErrorResponse(message: "Login failed");
 
-      _localCache.saveUserId(user.uid);
-
       final appUser = await getUser(user.uid);
 
       if (appUser != null) {
+        final lastUserId = await _localCache.getUserId();
+        print(lastUserId);
+        print(user.uid);
+        if (lastUserId == user.uid) return;
+
+        _localCache.saveUserId(user.uid);
+
         //generate keypair
         final keypair = Steganograph.generateKeypair();
 
@@ -90,7 +95,7 @@ class ApiServiceImpl implements ApiService {
     } catch (e, trace) {
       AppLogger.log(e);
       AppLogger.log(trace);
-      const ApiErrorResponse(message: "Login failed");
+      throw const ApiErrorResponse(message: "Login failed");
     }
   }
 
@@ -138,18 +143,19 @@ class ApiServiceImpl implements ApiService {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        const ApiErrorResponse(message: 'The password provided is too weak.');
+        throw const ApiErrorResponse(
+            message: 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        const ApiErrorResponse(
+        throw const ApiErrorResponse(
           message: 'An account already exists for that email. Log in instead.',
         );
       } else {
-        ApiErrorResponse(message: e.message ?? "Signup failed");
+        throw ApiErrorResponse(message: e.message ?? "Signup failed");
       }
     } catch (e, trace) {
       AppLogger.log(e);
       AppLogger.log(trace);
-      const ApiErrorResponse(message: "Signup failed");
+      throw const ApiErrorResponse(message: "Signup failed");
     }
   }
 

@@ -85,7 +85,7 @@ class LocalCacheImpl implements LocalCache {
 
   @override
   Future<void> clearCache() async {
-    await _storage.delete(_userId);
+    // await _storage.delete(_userId);
     await _storage.delete(_privateKey);
     await _storage.delete(_publicKey);
   }

@@ -22,17 +22,20 @@ class HomeView extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: FloatingActionButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  Routes.imagePickerViewRoute,
-                );
-              },
-            ),
+            child: Consumer(builder: (_, ref, __) {
+              return FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Icon(Icons.add),
+                onPressed: () async {
+                  await Navigator.of(context).pushNamed(
+                    Routes.imagePickerViewRoute,
+                  );
+                  ref.read(homeViewModelProvider).subscribeToStoriesStream();
+                },
+              );
+            }),
           ),
         ],
       ),
