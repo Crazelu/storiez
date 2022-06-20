@@ -53,7 +53,9 @@ class StoryView extends StatelessWidget {
                     builder: (_, snapshot) {
                       if (snapshot.hasData && snapshot.data == true) {
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            viewModel.showSecret(story);
+                          },
                           child: const Icon(
                             PhosphorIcons.lock_key_open,
                             size: 24,

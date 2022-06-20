@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:steganograph/steganograph.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
@@ -12,17 +11,22 @@ class StoryViewModel extends BaseViewModel {
 
   AppUser? _user;
   AppUser? get user => _user;
+  String _secretMessage = "";
 
   Future<String?> _downloadImageAndDecode(String imageUrl) async {
     try {
       final imageFile = await apiService.downloadImage(imageUrl);
 
-      AppLogger.log("Starting steganography decoding");
+      final privateKey = await localCache.getPrivateKey();
+      final currentUserId = await localCache.getUserId();
+
       final message = await Steganograph.decode(
         image: imageFile!,
+        encryptionKey: privateKey,
+        unencryptedPrefix: currentUserId,
+        encryptionType: EncryptionType.asymmetric,
       );
 
-      // log("MESSAGE: $message");
       return message;
     } catch (e, trace) {
       log(trace);
@@ -31,39 +35,32 @@ class StoryViewModel extends BaseViewModel {
     return null;
   }
 
-  bool? _hasSecret;
-
   Future<bool> hasSecret(Story story) async {
-    if (_hasSecret != null) {
-      return _hasSecret!;
-    }
     try {
       final message = await _downloadImageAndDecode(story.imageUrl);
 
-      log(message);
-      if (message == null || message.isEmpty) {
-        _hasSecret = false;
-        return false;
+      if (message != null && message.isNotEmpty) {
+        _secretMessage = message;
+        return true;
       }
+    } catch (e, trace) {
+      log(trace);
+      log(e);
+    }
 
-      final secret = jsonDecode(message) as Map<String, dynamic>;
+    return false;
+  }
 
-      log(secret);
-
-      final currentUserId = await localCache.getUserId();
-      log(currentUserId);
-
-      for (var key in secret.keys) {
-        if (key == currentUserId) {
-          _hasSecret = true;
-          return true;
-        }
+  void showSecret(Story story) {
+    try {
+      if (_secretMessage.isNotEmpty) {
+        showSnackBar(
+          "Secret message from ${story.poster.username} : $_secretMessage",
+        );
       }
     } catch (e) {
       log(e);
     }
-    _hasSecret = false;
-    return false;
   }
 
   Future<void> getUser() async {
