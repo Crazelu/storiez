@@ -70,7 +70,10 @@ class ApiServiceImpl implements ApiService {
 
       if (lastUserId == user.uid &&
           privateKey.isNotEmpty &&
-          publicKey.isNotEmpty) return;
+          publicKey.isNotEmpty) {
+        await _localCache.persistLoginStatus(true);
+        return;
+      }
 
       _localCache.saveUserId(user.uid);
 
@@ -87,6 +90,8 @@ class ApiServiceImpl implements ApiService {
         documentReferenceId: appUser.docId,
         publicKey: keypair.publicKey,
       );
+
+      await _localCache.persistLoginStatus(true);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw const ApiErrorResponse(
@@ -146,6 +151,8 @@ class ApiServiceImpl implements ApiService {
           publicKey: keypair.publicKey,
         ),
       );
+
+      await _localCache.persistLoginStatus(true);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw const ApiErrorResponse(

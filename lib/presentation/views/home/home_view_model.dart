@@ -60,6 +60,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void logout() {
+    localCache.persistLoginStatus(false);
     _user = null;
     _cancelStream();
     navigationHandler.pushReplacementNamed(Routes.loginViewRoute);

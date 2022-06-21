@@ -9,6 +9,7 @@ class LocalCacheImpl implements LocalCache {
   static const _privateKey = 'privateEncKey';
   static const _publicKey = 'publicEncKey';
   static const _savedStories = 'savedstories';
+  static const _loginStatus = 'loginStatus';
 
   late SecureStorage _storage;
   late SharedPreferences _sharedPreferences;
@@ -138,6 +139,25 @@ class LocalCacheImpl implements LocalCache {
       return List<Map<String, String>>.from(jsonDecode(data));
     } catch (e) {
       return [];
+    }
+  }
+
+  @override
+  bool getLoginStatus() {
+    try {
+      return getFromLocalCache(_loginStatus) as bool? ?? false;
+    } catch (e) {
+      AppLogger.log(e);
+    }
+    return false;
+  }
+
+  @override
+  Future<void> persistLoginStatus(bool isLoggedIn) async {
+    try {
+      await _sharedPreferences.setBool(_loginStatus, isLoggedIn);
+    } catch (e) {
+      AppLogger.log(e);
     }
   }
 }

@@ -29,12 +29,19 @@ abstract class LocalCache {
   ///Removes cached value stored with `key` from cache
   Future<void> removeFromLocalCache(String key);
 
+  ///Clears cache
   Future<void> clearCache();
 
+  ///Saves a story ID for story deletion job
   Future<void> saveStory({
     required String id,
     required String uploadTime,
   });
 
+  ///Retrieves uploaded story IDs
   Future<List<Map<String, String>>> getSavedStories();
+
+  Future<void> persistLoginStatus(bool isLoggedIn);
+
+  bool getLoginStatus();
 }

@@ -616,9 +616,11 @@ packages:
   steganograph:
     dependency: "direct main"
     description:
-      path: "../steganography"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: b8cf7dc8e0a7f7aa5b1adf3473d871b18317a367
+      url: "git@github.com:Crazelu/steganograph.git"
+    source: git
     version: "1.0.0"
   string_scanner:
     dependency: transitive
