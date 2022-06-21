@@ -19,7 +19,10 @@ class HomeViewModel extends BaseViewModel {
   StreamSubscription<List<Story>>? _stream;
 
   AppUser? _user;
-  AppUser? get user => _user;
+  AppUser? get user {
+    if (_user == null) getUser();
+    return _user;
+  }
 
   Future<void> getUser() async {
     try {
@@ -57,8 +60,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void logout() {
+    _user = null;
     _cancelStream();
-    localCache.clearCache();
     navigationHandler.pushReplacementNamed(Routes.loginViewRoute);
   }
 

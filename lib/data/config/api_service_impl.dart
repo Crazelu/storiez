@@ -60,28 +60,33 @@ class ApiServiceImpl implements ApiService {
 
       final appUser = await getUser(user.uid);
 
-      if (appUser != null) {
-        final lastUserId = await _localCache.getUserId();
-        print(lastUserId);
-        print(user.uid);
-        if (lastUserId == user.uid) return;
-
-        _localCache.saveUserId(user.uid);
-
-        //generate keypair
-        final keypair = Steganograph.generateKeypair();
-
-        await _localCache.saveKeys(
-          privateKey: keypair.privateKey,
-          publicKey: keypair.publicKey,
-        );
-
-        //update user
-        await updateUserPublicKey(
-          documentReferenceId: appUser.docId,
-          publicKey: keypair.publicKey,
-        );
+      if (appUser == null) {
+        throw const ApiErrorResponse(message: "Login failed");
       }
+
+      final lastUserId = await _localCache.getUserId();
+      final privateKey = await _localCache.getPrivateKey();
+      final publicKey = await _localCache.getPublicKey();
+
+      if (lastUserId == user.uid &&
+          privateKey.isNotEmpty &&
+          publicKey.isNotEmpty) return;
+
+      _localCache.saveUserId(user.uid);
+
+      //generate keypair
+      final keypair = Steganograph.generateKeypair();
+
+      await _localCache.saveKeys(
+        privateKey: keypair.privateKey,
+        publicKey: keypair.publicKey,
+      );
+
+      //update user
+      await updateUserPublicKey(
+        documentReferenceId: appUser.docId,
+        publicKey: keypair.publicKey,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw const ApiErrorResponse(

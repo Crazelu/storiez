@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/presentation/resources/palette.dart';
 import 'package:storiez/presentation/shared/shared.dart';
+import 'package:storiez/presentation/views/home/home_view_model.dart';
 import 'package:storiez/presentation/views/story/story_view_model.dart';
 
 class StoryView extends StatelessWidget {
@@ -73,6 +74,9 @@ class StoryView extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           viewModel.deleteStory(story);
+                          ref
+                              .read(homeViewModelProvider)
+                              .subscribeToStoriesStream();
                         },
                         child: const Icon(
                           PhosphorIcons.trash_simple,
