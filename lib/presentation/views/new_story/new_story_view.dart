@@ -51,8 +51,10 @@ class _NewStoryViewState extends State<NewStoryView> {
                           ),
                         ),
                         Consumer(builder: (_, ref, __) {
-                          return GestureDetector(
-                            onTap: () async {
+                          return CustomButton(
+                            width: 100,
+                            buttonText: "Add secret message",
+                            onPressed: () async {
                               final secretMessage = await Navigator.of(context)
                                   .pushNamed(Routes.addMessageViewRoute);
 
@@ -67,11 +69,6 @@ class _NewStoryViewState extends State<NewStoryView> {
                                     );
                               }
                             },
-                            child: const Icon(
-                              PhosphorIcons.file_lock_light,
-                              size: 24,
-                              color: Palette.primaryColorLight,
-                            ),
                           );
                         }),
                       ],

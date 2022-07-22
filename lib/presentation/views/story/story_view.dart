@@ -58,7 +58,7 @@ class StoryView extends StatelessWidget {
                             viewModel.showSecret(story);
                           },
                           child: const Icon(
-                            PhosphorIcons.lock_key_open,
+                            PhosphorIcons.eye_light,
                             size: 24,
                             color: Palette.primaryColorLight,
                           ),

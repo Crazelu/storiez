@@ -57,7 +57,10 @@ class CustomButton extends StatelessWidget {
                 ),
               ),
             )
-          : Text(buttonText),
+          : Text(
+              buttonText,
+              textAlign: TextAlign.center,
+            ),
     );
   }
 }

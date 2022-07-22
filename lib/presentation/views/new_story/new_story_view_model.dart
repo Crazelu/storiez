@@ -98,18 +98,17 @@ class NewStoryViewModel extends BaseViewModel {
     String? secretMessage,
   }) async {
     try {
-      final p = ReceivePort();
+      final receiverPort = ReceivePort();
       final args = <String, dynamic>{
-        "sendPort": p.sendPort,
+        "sendPort": receiverPort.sendPort,
         "recipientPublicKey": recipientPublicKey,
         "secretMessage": secretMessage,
         "recipientId": recipientId,
         "imagePath": image.path,
       };
       await Isolate.spawn(_encodeImage, args);
-      final result = await p.first as TransferableTypedData;
-      final buffer = result.materialize();
-      final bytes = buffer.asInt8List();
+      final result = await receiverPort.first as TransferableTypedData;
+      final bytes = result.materialize().asInt8List();
 
       if (bytes.isEmpty) {
         throw const ApiErrorResponse(
