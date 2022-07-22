@@ -37,7 +37,7 @@ class ApiServiceImpl implements ApiService {
       _timer = Timer.periodic(
         const Duration(seconds: 30),
         (timer) {
-          storyDeletionJob();
+          runStoryDeletionJob();
         },
       );
     } catch (e) {
@@ -173,30 +173,37 @@ class ApiServiceImpl implements ApiService {
   }
 
   @override
-  Future<void> storyDeletionJob() async {
+  Future<void> runStoryDeletionJob([List<Story> stories = const []]) async {
     try {
+      _logger.log("Running story deletion job with args: $stories");
       final now = DateTime.now();
 
-      final ref = _firestoreInstance
-          .collection(_storiesCollection)
-          .withConverter<Story>(
-            fromFirestore: (snapshot, _) => Story.fromMap(
-              snapshot.data()!,
-            ),
-            toFirestore: (story, _) => story.toMap(),
-          );
+      List<Map<String, String>> savedStories = [];
 
-      final savedStories = await _localCache.getSavedStories();
+      if (stories.isNotEmpty) {
+        savedStories =
+            List<Map<String, String>>.from(stories.map((e) => e.toMap(true)));
+      } else {
+        savedStories = _localCache.getSavedStories();
+      }
+
+      _logger.log(savedStories);
 
       for (var story in savedStories) {
         final date = DateTime.parse(story["uploadTime"]!);
 
-        if (now
-            .subtract(const Duration(
-              hours: 23,
-              minutes: 58,
-            ))
-            .isBefore(date)) {
+        final duration = now.difference(date);
+
+        if (duration.inHours >= 24) {
+          final ref = _firestoreInstance
+              .collection(_storiesCollection)
+              .withConverter<Story>(
+                fromFirestore: (snapshot, _) => Story.fromMap(
+                  snapshot.data()!,
+                ),
+                toFirestore: (story, _) => story.toMap(),
+              );
+
           Story? remoteStory;
           final documentRef = ref.doc(story["id"]!);
           documentRef.get().then((value) => remoteStory = value.data());
@@ -237,7 +244,7 @@ class ApiServiceImpl implements ApiService {
           );
 
       final documentReference = await ref.add(story);
-      _localCache.saveStory(
+      await _localCache.saveStory(
         id: documentReference.id,
         uploadTime: story.uploadTime.toIso8601String(),
       );
@@ -249,14 +256,24 @@ class ApiServiceImpl implements ApiService {
   @override
   Stream<List<Story>> getStories() {
     return _firestoreInstance.collection(_storiesCollection).snapshots().map(
-          (snapshot) => List<Story>.from(
-            snapshot.docs.map(
-              (document) => Story.fromMap(
-                document.data(),
-              ),
-            ),
-          ),
+      (snapshot) {
+        final stories = List<Story>.from(
+          snapshot.docs.map((document) {
+            return Story.fromMap(
+              document.data(),
+              document.id,
+            );
+          }),
         );
+        if (stories.isEmpty) {
+          _localCache.clearSavedStories();
+        } else {
+          runStoryDeletionJob(stories);
+        }
+
+        return stories;
+      },
+    );
   }
 
   @override
@@ -310,6 +327,8 @@ class ApiServiceImpl implements ApiService {
           .collection(_storiesCollection)
           .doc(documentId)
           .delete();
+
+      await _imageService.deleteImage(imageUrl);
     } catch (e) {
       _logger.log(e);
       throw const ApiErrorResponse(message: "Unable to delete story");

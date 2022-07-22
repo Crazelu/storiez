@@ -39,8 +39,12 @@ abstract class LocalCache {
   });
 
   ///Retrieves uploaded story IDs
-  Future<List<Map<String, String>>> getSavedStories();
+  List<Map<String, String>> getSavedStories();
 
+  ///Clears saved stories
+  Future<void> clearSavedStories();
+
+  ///Persists login status
   Future<void> persistLoginStatus(bool isLoggedIn);
 
   bool getLoginStatus();

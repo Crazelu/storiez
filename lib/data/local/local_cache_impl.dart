@@ -121,12 +121,11 @@ class LocalCacheImpl implements LocalCache {
     required String uploadTime,
   }) async {
     try {
-      final stories = await getSavedStories();
+      final stories = getSavedStories();
       stories.add({
         "id": id,
         "uploadTime": uploadTime,
       });
-
       await _sharedPreferences.setString(_savedStories, jsonEncode(stories));
     } catch (e) {
       _logger.log(e);
@@ -134,11 +133,14 @@ class LocalCacheImpl implements LocalCache {
   }
 
   @override
-  Future<List<Map<String, String>>> getSavedStories() async {
+  List<Map<String, String>> getSavedStories() {
     try {
       final data = getFromLocalCache(_savedStories) as String? ?? "[]";
-      return List<Map<String, String>>.from(jsonDecode(data));
+      final stories =
+          (jsonDecode(data) as List).map((e) => Map<String, String>.from(e));
+      return List<Map<String, String>>.from(stories);
     } catch (e) {
+      _logger.log(e);
       return [];
     }
   }
@@ -160,5 +162,10 @@ class LocalCacheImpl implements LocalCache {
     } catch (e) {
       _logger.log(e);
     }
+  }
+
+  @override
+  Future<void> clearSavedStories() async {
+    await _sharedPreferences.remove(_savedStories);
   }
 }

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:storiez/domain/models/user.dart';
 
 class Story extends Equatable {
+  final String id;
   final String imageUrl;
   final String caption;
   final Map<String, String> secretMessage;
@@ -10,6 +11,7 @@ class Story extends Equatable {
   final DateTime uploadTime;
 
   const Story({
+    this.id = "",
     required this.imageUrl,
     required this.poster,
     required this.uploadTime,
@@ -17,9 +19,13 @@ class Story extends Equatable {
     this.secretMessage = const {},
   });
 
-  factory Story.fromMap(Map<String, dynamic> data) {
+  factory Story.fromMap(
+    Map<String, dynamic> data, [
+    String id = "",
+  ]) {
     return Story(
       poster: AppUser.fromMap(jsonDecode(data["poster"] ?? "")),
+      id: id,
       imageUrl: data["imageUrl"] ?? "",
       caption: data["caption"] ?? "",
       uploadTime: DateTime.tryParse(data["uploadTime"] ?? "") ?? DateTime.now(),
@@ -28,6 +34,7 @@ class Story extends Equatable {
 
   Story copyWith({Map<String, String>? secretMessage}) {
     return Story(
+      id: id,
       poster: poster,
       imageUrl: imageUrl,
       caption: caption,
@@ -36,7 +43,8 @@ class Story extends Equatable {
     );
   }
 
-  Map<String, String> toMap() => {
+  Map<String, String> toMap([bool withId = false]) => {
+        if (withId) "id": id,
         "poster": jsonEncode(poster.toMap()),
         "imageUrl": imageUrl,
         "caption": caption,
@@ -45,6 +53,7 @@ class Story extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         poster,
         imageUrl,
         caption,

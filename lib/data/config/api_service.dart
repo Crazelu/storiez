@@ -23,7 +23,7 @@ abstract class ApiService {
   Future<void> uploadStory(Story story);
 
   ///Job that periodically runs to delete stories older than 24 hours
-  Future<void> storyDeletionJob();
+  Future<void> runStoryDeletionJob([List<Story> stories = const []]);
 
   ///Returns available stories
   Stream<List<Story>> getStories();
@@ -43,6 +43,7 @@ abstract class ApiService {
   ///Downloads image from [imageUrl]
   Future<File?> downloadImage(String imageUrl);
 
+  ///Subscribes to a stream of users
   Stream<List<AppUser>> getUsers();
 
   void dispose();
