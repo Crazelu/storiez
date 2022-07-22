@@ -5,6 +5,7 @@ import 'package:storiez/data/local/secure_storage.dart';
 import 'package:storiez/utils/logger.dart';
 
 class LocalCacheImpl implements LocalCache {
+  late final _logger = Logger(LocalCacheImpl);
   static const _userId = 'userId';
   static const _privateKey = 'privateEncKey';
   static const _publicKey = 'publicEncKey';
@@ -27,7 +28,7 @@ class LocalCacheImpl implements LocalCache {
     try {
       await _storage.delete(_userId);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
@@ -36,7 +37,7 @@ class LocalCacheImpl implements LocalCache {
     try {
       return _sharedPreferences.get(key);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
       return null;
     }
   }
@@ -56,13 +57,13 @@ class LocalCacheImpl implements LocalCache {
     try {
       await _storage.write(key: _userId, value: userId);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
   @override
   Future<void> saveToLocalCache({required String key, required value}) async {
-    AppLogger.log('Data being saved: key: $key, value: $value');
+    _logger.log('Data being saved: key: $key, value: $value');
 
     if (value is String) {
       await _sharedPreferences.setString(key, value);
@@ -110,7 +111,7 @@ class LocalCacheImpl implements LocalCache {
       await _storage.write(key: _privateKey, value: privateKey);
       await _storage.write(key: _publicKey, value: publicKey);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
@@ -128,7 +129,7 @@ class LocalCacheImpl implements LocalCache {
 
       await _sharedPreferences.setString(_savedStories, jsonEncode(stories));
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
@@ -147,7 +148,7 @@ class LocalCacheImpl implements LocalCache {
     try {
       return getFromLocalCache(_loginStatus) as bool? ?? false;
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
     return false;
   }
@@ -157,7 +158,7 @@ class LocalCacheImpl implements LocalCache {
     try {
       await _sharedPreferences.setBool(_loginStatus, isLoggedIn);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 }

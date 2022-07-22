@@ -1,5 +1,19 @@
 import 'dart:developer' as dev;
 
+class Logger {
+  final Type name;
+
+  Logger(this.name);
+
+  void log(Object? e) {
+    AppLogger.log('''
+${'🚩' * 30}
+From: $name
+Message: $e
+''');
+  }
+}
+
 class AppLogger {
   AppLogger._();
 

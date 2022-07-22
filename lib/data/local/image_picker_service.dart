@@ -9,6 +9,7 @@ abstract class ImagePickerService {
 }
 
 class ImagePickerServiceImpl implements ImagePickerService {
+  late final _logger = Logger(ImagePickerServiceImpl);
   @override
   Future<List<AssetImage>> getImages() async {
     try {
@@ -38,7 +39,7 @@ class ImagePickerServiceImpl implements ImagePickerService {
         );
       }
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
     return [];
   }

@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 class ImageServiceImpl implements ImageService {
   late Cloudinary _cloudinaryInstance;
+  late final _logger = Logger(ImageServiceImpl);
 
   ImageServiceImpl({
     required String apiKey,
@@ -33,7 +34,7 @@ class ImageServiceImpl implements ImageService {
         folder: "storiez-images",
         fileName: imageName,
         progressCallback: (count, total) {
-          AppLogger.log(
+          _logger.log(
             'Uploading image from file with progress: $count/$total',
           );
         },
@@ -56,7 +57,7 @@ class ImageServiceImpl implements ImageService {
         invalidate: true,
       );
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
@@ -66,11 +67,11 @@ class ImageServiceImpl implements ImageService {
       final cachedFilePath = _imageCache[imageUrl];
 
       if (cachedFilePath != null) {
-        AppLogger.log("Retrieved from cache");
+        _logger.log("Retrieved from cache");
         return File(cachedFilePath);
       }
 
-      AppLogger.log("Starting image download");
+      _logger.log("Starting image download");
       final response = await http.get(Uri.parse(imageUrl));
       final imageBytes = response.bodyBytes;
       final dir = await getApplicationDocumentsDirectory();
@@ -80,11 +81,11 @@ class ImageServiceImpl implements ImageService {
       await Directory(imageDirPath).create(recursive: true);
       final file = File(downloadedImageFilePath);
       await file.writeAsBytes(imageBytes);
-      AppLogger.log("Image downloaded to " + file.path);
+      _logger.log("Image downloaded to " + file.path);
       _imageCache[imageUrl] = file.path;
       return file;
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
       throw const ApiErrorResponse(message: "Image download failed");
     }
   }

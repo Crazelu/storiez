@@ -8,21 +8,19 @@ import 'package:storiez/utils/utils.dart';
 ///Base view model with shared dependencies injected.
 ///All view models must extends this class.
 class BaseViewModel extends ChangeNotifier {
+  late final _logger = Logger(runtimeType);
   late NavigationHandler navigationHandler;
-  late DialogHandler dialogHandler;
   late SnackbarHandler snackbarHandler;
   late LocalCache localCache;
   late ApiService apiService;
 
   BaseViewModel({
     NavigationHandler? navigationHandler,
-    DialogHandler? dialogHandler,
     LocalCache? localCache,
     ApiService? apiService,
     SnackbarHandler? snackbarHandler,
   }) {
     this.navigationHandler = navigationHandler ?? locator();
-    this.dialogHandler = dialogHandler ?? locator();
     this.localCache = localCache ?? locator();
     this.apiService = apiService ?? locator();
     this.snackbarHandler = snackbarHandler ?? locator();
@@ -36,7 +34,7 @@ class BaseViewModel extends ChangeNotifier {
   }
 
   void log(Object? e) {
-    AppLogger.log(e);
+    _logger.log(e);
   }
 
   void showSnackBar(String message) {

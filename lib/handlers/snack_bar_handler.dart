@@ -17,6 +17,7 @@ class SnackbarHandlerImpl implements SnackbarHandler {
 
   @override
   void showErrorSnackbar(String message) {
+    _key.currentState!.hideCurrentSnackBar();
     _key.currentState!.showSnackBar(
       SnackBar(
         backgroundColor: Palette.faintRed,
@@ -31,6 +32,7 @@ class SnackbarHandlerImpl implements SnackbarHandler {
 
   @override
   void showSnackbar(String message) {
+    _key.currentState!.hideCurrentSnackBar();
     _key.currentState!.showSnackBar(
       SnackBar(
         backgroundColor: Palette.lightGreen,

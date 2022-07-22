@@ -12,6 +12,7 @@ import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/utils/utils.dart';
 
 class ApiServiceImpl implements ApiService {
+  late final _logger = Logger(ApiServiceImpl);
   late LocalCache _localCache;
   late final FirebaseAuth _authInstance = FirebaseAuth.instance;
   late final FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
@@ -32,7 +33,7 @@ class ApiServiceImpl implements ApiService {
 
   void _scheduleStoryDeletion() {
     try {
-      AppLogger.log("Scheduling story deletion job");
+      _logger.log("Scheduling story deletion job");
       _timer = Timer.periodic(
         const Duration(seconds: 30),
         (timer) {
@@ -40,7 +41,7 @@ class ApiServiceImpl implements ApiService {
         },
       );
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
@@ -103,8 +104,8 @@ class ApiServiceImpl implements ApiService {
         throw ApiErrorResponse(message: e.message ?? "Login failed");
       }
     } catch (e, trace) {
-      AppLogger.log(e);
-      AppLogger.log(trace);
+      _logger.log(e);
+      _logger.log(trace);
       throw const ApiErrorResponse(message: "Login failed");
     }
   }
@@ -165,8 +166,8 @@ class ApiServiceImpl implements ApiService {
         throw ApiErrorResponse(message: e.message ?? "Signup failed");
       }
     } catch (e, trace) {
-      AppLogger.log(e);
-      AppLogger.log(trace);
+      _logger.log(e);
+      _logger.log(trace);
       throw const ApiErrorResponse(message: "Signup failed");
     }
   }
@@ -208,17 +209,17 @@ class ApiServiceImpl implements ApiService {
         }
       }
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
   @override
   Future<String> uploadImage(File image) async {
     try {
-      AppLogger.log("Start image upload");
+      _logger.log("Start image upload");
       return await _imageService.uploadImage(image);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
       throw const ApiErrorResponse(message: "Image upload failed");
     }
   }
@@ -272,7 +273,7 @@ class ApiServiceImpl implements ApiService {
             ),
           );
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
       return null;
     }
   }
@@ -289,10 +290,10 @@ class ApiServiceImpl implements ApiService {
           .update(
         {"publicKey": publicKey},
       ).onError(
-        (error, stackTrace) => AppLogger.log(error),
+        (error, stackTrace) => _logger.log(error),
       );
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 
@@ -310,7 +311,7 @@ class ApiServiceImpl implements ApiService {
           .doc(documentId)
           .delete();
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
       throw const ApiErrorResponse(message: "Unable to delete story");
     }
   }

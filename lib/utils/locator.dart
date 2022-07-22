@@ -54,6 +54,5 @@ Future<void> setupLocator() async {
   //Handlers
   locator
       .registerLazySingleton<NavigationHandler>(() => NavigationHandlerImpl());
-  locator.registerLazySingleton<DialogHandler>(() => DialogHandlerImpl());
   locator.registerLazySingleton<SnackbarHandler>(() => SnackbarHandlerImpl());
 }

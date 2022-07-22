@@ -3,6 +3,7 @@ import 'package:storiez/data/local/secure_storage.dart';
 import 'package:storiez/utils/logger.dart';
 
 class SecureStorageImpl implements SecureStorage {
+  late final _logger = Logger(SecureStorageImpl);
   late FlutterSecureStorage _storage;
 
   SecureStorageImpl({FlutterSecureStorage? storage}) {
@@ -24,7 +25,7 @@ class SecureStorageImpl implements SecureStorage {
     try {
       return await _storage.read(key: key);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
       return null;
     }
   }
@@ -34,7 +35,7 @@ class SecureStorageImpl implements SecureStorage {
     try {
       await _storage.write(key: key, value: value);
     } catch (e) {
-      AppLogger.log(e);
+      _logger.log(e);
     }
   }
 }

@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   get_it: ^7.1.3
-  flutter_dialog_manager: ^1.0.0+4
   gap: ^2.0.0
   equatable: ^2.0.3
   flutter_secure_storage: ^5.0.2
