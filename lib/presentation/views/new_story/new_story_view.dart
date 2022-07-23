@@ -106,19 +106,22 @@ class _NewStoryViewState extends State<NewStoryView> {
                         ),
                         const Gap(8),
                         Consumer(builder: (_, ref, __) {
-                          return FloatingActionButton(
-                            backgroundColor: Palette.lightGreen,
-                            onPressed: () {
-                              ref.read(newStoryViewModelProvider).uploadStory(
-                                    image: widget.image,
-                                    caption: _captionController.text,
-                                  );
-                            },
-                            child: const RotatedBox(
-                              quarterTurns: 1,
-                              child: Icon(
-                                PhosphorIcons.paper_plane_bold,
-                                color: Palette.primaryColorLight,
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: FloatingActionButton(
+                              backgroundColor: Palette.lightGreen,
+                              onPressed: () {
+                                ref.read(newStoryViewModelProvider).uploadStory(
+                                      image: widget.image,
+                                      caption: _captionController.text,
+                                    );
+                              },
+                              child: const RotatedBox(
+                                quarterTurns: 1,
+                                child: Icon(
+                                  PhosphorIcons.paper_plane_bold,
+                                  color: Palette.primaryColorLight,
+                                ),
                               ),
                             ),
                           );
