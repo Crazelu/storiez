@@ -71,6 +71,7 @@ class _LoginViewState extends State<LoginView> {
                             buttonText: "Login",
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
+                                FocusScope.of(context).unfocus();
                                 ref.read(loginViewModelProvider).login(
                                       email: _emailController.text,
                                       password: _passwordController.text,

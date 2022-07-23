@@ -95,6 +95,7 @@ class _SignupViewState extends State<SignupView> {
                             buttonText: "Signup",
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
+                                FocusScope.of(context).unfocus();
                                 ref.read(signupViewModelProvider).signup(
                                       email: _emailController.text,
                                       username: _usernameController.text,
