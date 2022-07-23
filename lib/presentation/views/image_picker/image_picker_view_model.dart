@@ -22,13 +22,31 @@ class ImagePickerViewModel extends BaseViewModel {
   File? _selectedImage;
   File? get selectedImage => _selectedImage;
 
+  int _page = 1;
+  bool _shouldFetch = true;
+  static const _itemsPerPage = 50;
+
   Future<void> getImages() async {
     try {
-      if (_images.isNotEmpty) return;
+      if (loading || !_shouldFetch) return;
 
-      _images = await _imagePicker.getImages();
-      notifyListeners();
+      toggleLoading(true);
+
+      final fetchedImages = await _imagePicker.getImages(
+        page: _page,
+        itemsPerPage: _itemsPerPage,
+      );
+
+      if (fetchedImages.length < _itemsPerPage) {
+        _shouldFetch = false;
+      } else {
+        _page++;
+      }
+      _images += fetchedImages;
+
+      toggleLoading(false);
     } catch (e) {
+      toggleLoading(false);
       handleError(e);
     }
   }

@@ -69,46 +69,55 @@ class _ImagePickerViewState extends State<ImagePickerView> {
             ),
             child: Consumer(
               builder: (_, ref, __) {
-                return CustomScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        childAspectRatio: 1.0,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
+                return NotificationListener<ScrollNotification>(
+                  onNotification: ((scrollInfo) {
+                    if (scrollInfo.metrics.pixels >
+                        scrollInfo.metrics.maxScrollExtent + 10) {
+                      ref.read(imagePickerViewModelProvider).getImages();
+                    }
+                    return false;
+                  }),
+                  child: CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          childAspectRatio: 1.0,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final viewModel =
+                                ref.watch(imagePickerViewModelProvider);
+                            final images = viewModel.images;
+                            return ImagePreview(
+                              asset: images[index],
+                              selected: (file) {
+                                return file != null &&
+                                    viewModel.selectedImage == file;
+                              },
+                              onSelected: (file) {
+                                ref
+                                    .read(imagePickerViewModelProvider)
+                                    .setSelectedImage(file!);
+                                Navigator.of(context).pushNamed(
+                                  Routes.newStoryViewRoute,
+                                  arguments: file,
+                                );
+                              },
+                            );
+                          },
+                          childCount: ref
+                              .watch(imagePickerViewModelProvider)
+                              .images
+                              .length,
+                        ),
                       ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final viewModel =
-                              ref.watch(imagePickerViewModelProvider);
-                          final images = viewModel.images;
-                          return ImagePreview(
-                            asset: images[index],
-                            selected: (file) {
-                              return file != null &&
-                                  viewModel.selectedImage == file;
-                            },
-                            onSelected: (file) {
-                              ref
-                                  .read(imagePickerViewModelProvider)
-                                  .setSelectedImage(file!);
-                              Navigator.of(context).pushNamed(
-                                Routes.newStoryViewRoute,
-                                arguments: file,
-                              );
-                            },
-                          );
-                        },
-                        childCount: ref
-                            .watch(imagePickerViewModelProvider)
-                            .images
-                            .length,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),

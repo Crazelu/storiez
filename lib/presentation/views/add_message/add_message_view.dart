@@ -60,7 +60,7 @@ class _AddMessageViewState extends State<AddMessageView> {
                               buttonText: "Send",
                               onPressed: () {
                                 if (_messageController.text.isEmpty) {
-                                  locator<SnackbarHandler>().showSnackbar(
+                                  locator<SnackbarHandler>().showErrorSnackbar(
                                     "Add a secret message to continue",
                                   );
                                 } else {
