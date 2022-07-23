@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:storiez/handlers/navigation_handler.dart';
 import 'package:storiez/presentation/resources/app_assets.dart';
 import 'package:storiez/presentation/resources/palette.dart';
 import 'package:storiez/presentation/routes/routes.dart';
@@ -8,6 +9,7 @@ import 'package:storiez/presentation/shared/shared.dart';
 import 'package:storiez/presentation/views/home/home_view_model.dart';
 import 'package:storiez/presentation/views/home/widgets/drawer.dart';
 import 'package:storiez/presentation/views/story/story_view.dart';
+import 'package:storiez/utils/locator.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -15,6 +17,9 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      onWillPop: () {
+        locator<NavigationHandler>().exitApp();
+      },
       backgroundColor: Palette.primaryColor,
       appBar: AppBar(
         title: const Text("Storiez"),

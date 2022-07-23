@@ -28,6 +28,9 @@ class _ImagePickerViewState extends State<ImagePickerView> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      onWillPop: () {
+        Navigator.of(context).pop();
+      },
       appBar: AppBar(
         backgroundColor: Palette.primaryColorLight,
         elevation: 0,

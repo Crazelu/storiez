@@ -26,6 +26,9 @@ class _NewStoryViewState extends State<NewStoryView> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      onWillPop: () {
+        Navigator.of(context).pop();
+      },
       backgroundColor: Palette.primaryColor,
       builder: (_) {
         return SafeArea(

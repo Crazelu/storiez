@@ -22,6 +22,9 @@ class _AddMessageViewState extends State<AddMessageView> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      onWillPop: () {
+        Navigator.of(context).pop();
+      },
       appBar: AppBar(
         title: const Text("Add secret message"),
       ),
