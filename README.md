@@ -21,7 +21,7 @@ OR (debug 🐛)
 ```bash
 flutter run --dart-define="CLOUDINARY_API_KEY={your_key}" --dart-define="CLOUDINARY_API_SECRET={your_secret}" --dart-define="CLOUDINARY_CLOUD_NAME={your_cloud_name}" -t lib/main_dev.dart
 ```
-### Screenshots 😋
+### Screenshots 📷
 
 
 <img src="https://raw.githubusercontent.com/Crazelu/storiez/main/assets/screenshots/splash.png" width="270" height="600"> <img src="https://raw.githubusercontent.com/Crazelu/storiez/main/assets/screenshots/signup.png" width="270" height="600"> <img src="https://raw.githubusercontent.com/Crazelu/storiez/main/assets/screenshots/login.png" width="270" height="600">
