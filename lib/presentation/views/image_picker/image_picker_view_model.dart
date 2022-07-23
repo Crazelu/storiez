@@ -5,7 +5,7 @@ import 'package:storiez/domain/models/asset_image.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
 import 'package:storiez/utils/locator.dart';
 
-final imagePickerViewModelProvider = ChangeNotifierProvider.autoDispose((_) {
+final imagePickerViewModelProvider = ChangeNotifierProvider((_) {
   return ImagePickerViewModel();
 });
 
@@ -24,6 +24,8 @@ class ImagePickerViewModel extends BaseViewModel {
 
   Future<void> getImages() async {
     try {
+      if (_images.isNotEmpty) return;
+
       _images = await _imagePicker.getImages();
       notifyListeners();
     } catch (e) {

@@ -26,7 +26,8 @@ class HomeView extends StatelessWidget {
         centerTitle: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8) +
+                const EdgeInsets.only(right: 8),
             child: Consumer(builder: (_, ref, __) {
               return FloatingActionButton(
                 shape: RoundedRectangleBorder(
