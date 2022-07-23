@@ -134,7 +134,7 @@ class StoryView extends StatelessWidget {
                       const Gap(8),
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                          maxWidth: size.width * .82,
+                          maxWidth: size.width * .8,
                         ),
                         child: RichText(
                             text: TextSpan(
