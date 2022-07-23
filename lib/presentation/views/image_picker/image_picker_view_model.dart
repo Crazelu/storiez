@@ -55,4 +55,8 @@ class ImagePickerViewModel extends BaseViewModel {
     _selectedImage = image;
     notifyListeners();
   }
+
+  void resetState() {
+    _selectedImage = null;
+  }
 }

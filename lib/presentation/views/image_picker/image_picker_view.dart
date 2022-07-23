@@ -19,9 +19,12 @@ class _ImagePickerViewState extends State<ImagePickerView> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => ProviderScope.containerOf(context)
-          .read(imagePickerViewModelProvider)
-          .getImages(),
+      () {
+        final viewModel = ProviderScope.containerOf(context)
+            .read(imagePickerViewModelProvider);
+        viewModel.resetState();
+        viewModel.getImages();
+      },
     );
   }
 
