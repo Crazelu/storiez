@@ -94,8 +94,9 @@ class _NewStoryViewState extends State<NewStoryView> {
                       children: [
                         Expanded(
                           child: SizedBox(
-                            height: 56,
+                            height: 86,
                             child: CustomTextField(
+                              maxLength: 100,
                               fillColor: Palette.primaryColorLight,
                               controller: _captionController,
                               borderRadius: 30,

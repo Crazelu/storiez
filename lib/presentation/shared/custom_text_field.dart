@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const double textFieldBorderWidth = .5;
 
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final double borderRadius;
   final Color? fillColor;
+  final int? maxLength;
 
   const CustomTextField({
     Key? key,
@@ -28,6 +30,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.fillColor,
+    this.maxLength,
     this.textInputAction = TextInputAction.next,
     this.readOnly = false,
     this.obscureText = false,
@@ -39,6 +42,10 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: maxLength,
+      maxLengthEnforcement: maxLength != null
+          ? MaxLengthEnforcement.truncateAfterCompositionEnds
+          : MaxLengthEnforcement.none,
       obscureText: obscureText,
       readOnly: readOnly,
       maxLines: maxLines,

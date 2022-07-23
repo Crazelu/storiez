@@ -4,6 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/presentation/resources/palette.dart';
+import 'package:storiez/presentation/resources/text_styles.dart';
 import 'package:storiez/presentation/shared/shared.dart';
 import 'package:storiez/presentation/views/home/home_view_model.dart';
 import 'package:storiez/presentation/views/story/story_view_model.dart';
@@ -32,16 +33,33 @@ class StoryView extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          CachedNetworkImage(
-            memCacheHeight: (size.height * .5).toInt(),
-            imageUrl: story.imageUrl,
-            placeholder: (_, __) =>
-                const Center(child: CircularProgressIndicator.adaptive()),
-            errorWidget: (_, __, ___) {
-              return const Center(
-                child: Icon(PhosphorIcons.image),
-              );
-            },
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Gap(70),
+              CachedNetworkImage(
+                memCacheHeight: (size.height * .5).toInt(),
+                imageUrl: story.imageUrl,
+                imageBuilder: (_, image) {
+                  return Container(
+                    height: size.height * .6,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: image,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  );
+                },
+                placeholder: (_, __) =>
+                    const Center(child: CircularProgressIndicator.adaptive()),
+                errorWidget: (_, __, ___) {
+                  return const Center(
+                    child: Icon(PhosphorIcons.image),
+                  );
+                },
+              ),
+            ],
           ),
           Positioned.fill(
             bottom: size.height - 160,
@@ -96,9 +114,48 @@ class StoryView extends StatelessWidget {
             top: size.height * .7,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: CustomText.regular(
-                text: story.caption,
-                color: Palette.primaryColorLight.withOpacity(.9),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: story.caption.length > 20
+                        ? CrossAxisAlignment.start
+                        : CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Palette.lightGreen,
+                        child: CustomText.body(
+                          fontSize: 12,
+                          text: story.poster.initials,
+                          color: Palette.primaryColorLight,
+                        ),
+                      ),
+                      const Gap(8),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: size.width * .82,
+                        ),
+                        child: RichText(
+                            text: TextSpan(
+                          text: story.poster.username + " ",
+                          style: TextStyles.heading4Style.copyWith(
+                            color: Palette.primaryColorLight,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: story.caption,
+                              style: TextStyles.regularStyle.copyWith(
+                                color:
+                                    Palette.primaryColorLight.withOpacity(.9),
+                              ),
+                            ),
+                          ],
+                        )),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           )
