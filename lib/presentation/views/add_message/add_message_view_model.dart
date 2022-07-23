@@ -19,7 +19,7 @@ class AddMessageViewModel extends BaseViewModel {
   void getUsers() {
     try {
       toggleLoading(true);
-      _stream = apiService.getUsers().listen(
+      _stream = storiezService.getUsers().listen(
         (users) {
           _users = users;
           toggleLoading(false);

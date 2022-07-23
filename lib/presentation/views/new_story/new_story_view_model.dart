@@ -21,7 +21,7 @@ class NewStoryViewModel extends BaseViewModel {
 
   Future<void> getUser() async {
     try {
-      _user = await apiService.getUser(await localCache.getUserId());
+      _user = await storiezService.getUser(await localCache.getUserId());
       notifyListeners();
     } catch (e) {
       handleError(e);
@@ -57,7 +57,7 @@ class NewStoryViewModel extends BaseViewModel {
 
       log(encodedImage);
 
-      final imageUrl = await apiService.uploadImage(encodedImage!);
+      final imageUrl = await storiezService.uploadImage(encodedImage!);
       log("Image uploaded");
 
       if (_user == null) {
@@ -70,7 +70,7 @@ class NewStoryViewModel extends BaseViewModel {
         log(e);
       }
 
-      await apiService.uploadStory(
+      await storiezService.uploadStory(
         Story(
           imageUrl: imageUrl,
           poster: _user!,

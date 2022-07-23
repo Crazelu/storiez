@@ -13,7 +13,7 @@ class LoginViewModel extends BaseViewModel {
   }) async {
     try {
       toggleLoading(true);
-      await apiService.login(email: email, password: password);
+      await storiezService.login(email: email, password: password);
       toggleLoading(false);
       navigationHandler.pushReplacementNamed(Routes.homeViewRoute);
     } catch (e) {

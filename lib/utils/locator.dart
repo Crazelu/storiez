@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:storiez/data/config/api_service.dart';
-import 'package:storiez/data/config/api_service_impl.dart';
 import 'package:storiez/data/local/__local.dart';
 import 'package:storiez/data/remote/image_service.dart';
 import 'package:storiez/data/remote/image_service_impl.dart';
+import 'package:storiez/data/remote/storiez_service.dart';
+import 'package:storiez/data/remote/storiez_service_impl.dart';
 import 'package:storiez/handlers/handlers.dart';
 
 GetIt locator = GetIt.instance;
@@ -32,8 +32,8 @@ Future<void> setupLocator() async {
     ),
   );
 
-  locator.registerLazySingleton<ApiService>(
-    () => ApiServiceImpl(
+  locator.registerLazySingleton<StoriezService>(
+    () => StoriezServiceImpl(
       localCache: locator(),
       imageService: locator(),
     ),

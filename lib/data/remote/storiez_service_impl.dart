@@ -3,16 +3,16 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:steganograph/steganograph.dart';
-import 'package:storiez/data/config/api_service.dart';
 import 'package:storiez/data/local/__local.dart';
 import 'package:storiez/data/remote/image_service.dart';
+import 'package:storiez/data/remote/storiez_service.dart';
 import 'package:storiez/domain/models/api/error/api_error_response.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/utils/utils.dart';
 
-class ApiServiceImpl implements ApiService {
-  late final _logger = Logger(ApiServiceImpl);
+class StoriezServiceImpl implements StoriezService {
+  late final _logger = Logger(StoriezServiceImpl);
   late LocalCache _localCache;
   late final FirebaseAuth _authInstance = FirebaseAuth.instance;
   late final FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
@@ -22,7 +22,7 @@ class ApiServiceImpl implements ApiService {
   static const _usersCollection = "users";
   static const _storiesCollection = "stories";
 
-  ApiServiceImpl({
+  StoriezServiceImpl({
     required LocalCache localCache,
     required ImageService imageService,
   }) {

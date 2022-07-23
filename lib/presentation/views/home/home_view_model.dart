@@ -26,7 +26,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> getUser() async {
     try {
-      _user = await apiService.getUser(await localCache.getUserId());
+      _user = await storiezService.getUser(await localCache.getUserId());
       notifyListeners();
     } catch (e) {
       handleError(e);
@@ -36,7 +36,7 @@ class HomeViewModel extends BaseViewModel {
   void subscribeToStoriesStream() {
     try {
       toggleLoading(true);
-      _stream = apiService.getStories().listen(
+      _stream = storiezService.getStories().listen(
         (stories) {
           _stories = stories;
           toggleLoading(false);

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 
-abstract class ApiService {
+abstract class StoriezService {
   ///Uploads an image
   Future<String> uploadImage(File image);
 

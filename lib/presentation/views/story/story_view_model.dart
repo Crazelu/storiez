@@ -14,7 +14,7 @@ class StoryViewModel extends BaseViewModel {
 
   Future<String?> _downloadImageAndDecode(String imageUrl) async {
     try {
-      final imageFile = await apiService.downloadImage(imageUrl);
+      final imageFile = await storiezService.downloadImage(imageUrl);
 
       final privateKey = await localCache.getPrivateKey();
       final currentUserId = await localCache.getUserId();
@@ -64,7 +64,7 @@ class StoryViewModel extends BaseViewModel {
 
   Future<void> getUser() async {
     try {
-      _user = await apiService.getUser(await localCache.getUserId());
+      _user = await storiezService.getUser(await localCache.getUserId());
       notifyListeners();
     } catch (e) {
       handleError(e);
@@ -75,7 +75,7 @@ class StoryViewModel extends BaseViewModel {
     try {
       if (loading) return;
       toggleLoading(true);
-      await apiService.deleteStory(story.imageUrl);
+      await storiezService.deleteStory(story.imageUrl);
       toggleLoading(false);
       showSnackBar("Story deleted");
     } catch (e) {

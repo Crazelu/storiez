@@ -14,7 +14,7 @@ class SignupViewModel extends BaseViewModel {
   }) async {
     try {
       toggleLoading(true);
-      await apiService.signUp(
+      await storiezService.signUp(
         email: email,
         password: password,
         username: username,
