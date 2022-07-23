@@ -271,6 +271,8 @@ class StoriezServiceImpl implements StoriezService {
           runStoryDeletionJob(stories);
         }
 
+        stories.sort(((a, b) => b.uploadTime.compareTo(a.uploadTime)));
+
         return stories;
       },
     );
