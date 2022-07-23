@@ -8,7 +8,11 @@ abstract class ImageService {
   Future<void> deleteImage(String url);
 
   ///Downloads image from [imageUrl] to file system
-  Future<File?> downloadImage(String imageUrl);
+  Future<File?> downloadImage(
+    String imageUrl, [
+    String? imageDirectoryPath,
+  ]);
 
+  ///Image Cache
   Map<String, String> get imageCache;
 }

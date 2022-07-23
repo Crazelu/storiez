@@ -33,6 +33,7 @@ class StoryView extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CachedNetworkImage(
+            memCacheHeight: (size.height * .5).toInt(),
             imageUrl: story.imageUrl,
             placeholder: (_, __) =>
                 const Center(child: CircularProgressIndicator.adaptive()),

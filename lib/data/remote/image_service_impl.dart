@@ -62,7 +62,10 @@ class ImageServiceImpl implements ImageService {
   }
 
   @override
-  Future<File?> downloadImage(String imageUrl) async {
+  Future<File?> downloadImage(
+    String imageUrl, [
+    String? imageDirectoryPath,
+  ]) async {
     try {
       final cachedFilePath = _imageCache[imageUrl];
 
@@ -74,9 +77,15 @@ class ImageServiceImpl implements ImageService {
       _logger.log("Starting image download");
       final response = await http.get(Uri.parse(imageUrl));
       final imageBytes = response.bodyBytes;
-      final dir = await getApplicationDocumentsDirectory();
+      String imageDirPath = "";
+      if (imageDirectoryPath != null) {
+        imageDirPath = imageDirectoryPath;
+      } else {
+        final dir = await getApplicationDocumentsDirectory();
+        imageDirPath = dir.path + "/images";
+      }
+
       final uuid = const Uuid().v1();
-      final imageDirPath = dir.path + "/images";
       final downloadedImageFilePath = imageDirPath + "/$uuid.png";
       await Directory(imageDirPath).create(recursive: true);
       final file = File(downloadedImageFilePath);
