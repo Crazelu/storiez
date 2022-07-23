@@ -1,6 +1,6 @@
 # storiez
 
-Storiez is a story sharing application where users can share image stories with friends and embed encrypted secret messages securely for the target recepients.
+A stories sharing application where users can share image stories with friends and embed encrypted secret messages securely for the target recipients.
 
 # Getting started
 
