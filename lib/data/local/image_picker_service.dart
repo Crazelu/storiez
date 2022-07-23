@@ -1,3 +1,4 @@
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:storiez/domain/models/api/error/api_error_response.dart';
 import 'package:storiez/domain/models/asset_image.dart';
@@ -59,10 +60,23 @@ class ImagePickerServiceImpl implements ImagePickerService {
     final state = await PhotoManager.requestPermissionExtend();
     if (state == PermissionState.authorized ||
         state == PermissionState.limited) {
-      return true;
+      return await _hasStoragePermissions();
     }
 
     await PhotoManager.openSetting();
+    return false;
+  }
+
+  Future<bool> _hasStoragePermissions() async {
+    final status = await Permission.storage.status;
+
+    if (status.isGranted) return true;
+    if (status.isDenied) {
+      return await Permission.storage.request().isGranted;
+    }
+
+    openAppSettings();
+
     return false;
   }
 }

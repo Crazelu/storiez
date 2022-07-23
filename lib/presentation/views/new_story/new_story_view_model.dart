@@ -151,6 +151,8 @@ class NewStoryViewModel extends BaseViewModel {
 
       final encodedImageBytes = result?.readAsBytesSync();
 
+      print(result);
+
       Isolate.exit(
         sendPort,
         TransferableTypedData.fromList([
@@ -158,6 +160,7 @@ class NewStoryViewModel extends BaseViewModel {
         ]),
       );
     } catch (e) {
+      print(e);
       Isolate.exit(
         sendPort,
         TransferableTypedData.fromList([
