@@ -5,7 +5,7 @@ import 'package:storiez/domain/models/asset_image.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
 import 'package:storiez/utils/locator.dart';
 
-final imagePickerViewModelProvider = ChangeNotifierProvider((_) {
+final imagePickerViewModelProvider = ChangeNotifierProvider.autoDispose((_) {
   return ImagePickerViewModel();
 });
 
@@ -54,9 +54,5 @@ class ImagePickerViewModel extends BaseViewModel {
   void setSelectedImage(File image) {
     _selectedImage = image;
     notifyListeners();
-  }
-
-  void resetState() {
-    _selectedImage = null;
   }
 }
