@@ -6,6 +6,7 @@ import 'package:storiez/data/remote/image_service_impl.dart';
 import 'package:storiez/data/remote/storiez_service.dart';
 import 'package:storiez/data/remote/storiez_service_impl.dart';
 import 'package:storiez/handlers/handlers.dart';
+import 'package:storiez/presentation/stores/user_store.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -49,6 +50,10 @@ Future<void> setupLocator() async {
       apiSecret: cloudinaryApiSecret,
       cloudName: cloudinaryCloudName,
     ),
+  );
+
+  locator.registerLazySingleton<UserStore>(
+    () => UserStore(),
   );
 
   //Handlers

@@ -76,7 +76,7 @@ class StoriezServiceImpl implements StoriezService {
         return;
       }
 
-      _localCache.saveUserId(user.uid);
+      await _localCache.saveUserId(user.uid);
 
       //generate keypair
       final keypair = Steganograph.generateKeypair();

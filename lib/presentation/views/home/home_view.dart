@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,11 +9,57 @@ import 'package:storiez/presentation/routes/routes.dart';
 import 'package:storiez/presentation/shared/shared.dart';
 import 'package:storiez/presentation/views/home/home_view_model.dart';
 import 'package:storiez/presentation/views/home/widgets/drawer.dart';
+import 'package:storiez/presentation/views/home/widgets/indicator_row.dart';
 import 'package:storiez/presentation/views/story/story_view.dart';
-import 'package:storiez/utils/locator.dart';
+import 'package:storiez/utils/utils.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  late final _logger = Logger(_HomeViewState);
+  late final _pageController = PageController();
+  late final ValueNotifier<int> _currentIndex = ValueNotifier(0);
+  late final ValueNotifier<bool> _pageViewRenderStatus = ValueNotifier(false);
+  Timer? _timer;
+
+  void _checkPageViewRenderStatus() {
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (_pageController.hasClients) {
+          _pageViewRenderStatus.value = true;
+          timer.cancel();
+        }
+      },
+    );
+  }
+
+  void _listenToPageChange() {
+    try {
+      _currentIndex.value = _pageController.page!.round();
+    } catch (e) {
+      _logger.log(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(_listenToPageChange);
+    _checkPageViewRenderStatus();
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(_listenToPageChange);
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +134,30 @@ class HomeView extends StatelessWidget {
                   ],
                 );
               }
-              return PageView.builder(
-                itemCount: stories.length,
-                itemBuilder: (_, index) {
-                  return StoryView(story: stories[index]);
-                },
+              return Stack(
+                children: [
+                  ValueListenableBuilder<bool>(
+                      valueListenable: _pageViewRenderStatus,
+                      builder: (_, isPageViewBuilt, __) {
+                        if (!isPageViewBuilt) return const SizedBox();
+                        return ValueListenableBuilder<int>(
+                          valueListenable: _currentIndex,
+                          builder: (_, activeIndex, __) {
+                            return IndicatorRow(
+                              length: stories.length,
+                              activeIndex: activeIndex,
+                            );
+                          },
+                        );
+                      }),
+                  PageView.builder(
+                    controller: _pageController,
+                    itemCount: stories.length,
+                    itemBuilder: (_, index) {
+                      return StoryView(story: stories[index]);
+                    },
+                  ),
+                ],
               );
             },
           ),

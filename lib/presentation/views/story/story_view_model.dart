@@ -3,7 +3,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:steganograph/steganograph.dart';
 import 'package:storiez/data/remote/image_service_impl.dart';
 import 'package:storiez/domain/models/story.dart';
-import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
 import 'package:storiez/presentation/views/story/secret_cache.dart';
 
@@ -37,12 +36,6 @@ Future<void> _downloadImageAndDecode(
 }
 
 class StoryViewModel extends BaseViewModel {
-  StoryViewModel() {
-    getUser();
-  }
-
-  AppUser? _user;
-  AppUser? get user => _user;
   String _secretMessage = "";
 
   /// Checks [SecretCache] for [imageUrl] and retrieve cached secret.
@@ -107,15 +100,6 @@ class StoryViewModel extends BaseViewModel {
       }
     } catch (e) {
       log(e);
-    }
-  }
-
-  Future<void> getUser() async {
-    try {
-      _user = await storiezService.getUser(await localCache.getUserId());
-      notifyListeners();
-    } catch (e) {
-      handleError(e);
     }
   }
 

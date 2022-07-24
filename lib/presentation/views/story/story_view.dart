@@ -87,7 +87,7 @@ class StoryView extends StatelessWidget {
                     },
                   ),
                   Consumer(builder: (_, ref, __) {
-                    final user = ref.watch(storyViewModelProvider).user;
+                    final user = ref.watch(homeViewModelProvider).user;
 
                     if (user?.id == story.poster.id) {
                       return GestureDetector(

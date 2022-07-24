@@ -5,4 +5,5 @@ class Palette {
   static const primaryColorLight = Color(0xffffffff);
   static const faintRed = Color(0xffF95A7D);
   static const lightGreen = Color(0xff4CD964);
+  static const inactiveColor = Colors.blueGrey;
 }

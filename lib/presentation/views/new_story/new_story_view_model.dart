@@ -6,27 +6,29 @@ import 'package:steganograph/steganograph.dart';
 import 'package:storiez/domain/models/api/error/api_error_response.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
+import 'package:storiez/presentation/stores/user_store.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
+import 'package:storiez/utils/locator.dart';
 
 final newStoryViewModelProvider = ChangeNotifierProvider((_) {
   return NewStoryViewModel();
 });
 
 class NewStoryViewModel extends BaseViewModel {
+  late final UserStore _userStore = locator();
   NewStoryViewModel() {
-    getUser();
+    _addListeners();
+    _userStore.getUser();
+  }
+
+  void _addListeners() {
+    _user = _userStore.user.value;
+    _userStore.user.addListener(() {
+      _user = _userStore.user.value;
+    });
   }
 
   AppUser? _user;
-
-  Future<void> getUser() async {
-    try {
-      _user = await storiezService.getUser(await localCache.getUserId());
-      notifyListeners();
-    } catch (e) {
-      handleError(e);
-    }
-  }
 
   Future<void> uploadStory({
     required File image,
@@ -57,12 +59,12 @@ class NewStoryViewModel extends BaseViewModel {
 
       log(encodedImage);
 
+      if (_user == null) {
+        await _userStore.getUser();
+      }
+
       final imageUrl = await storiezService.uploadImage(encodedImage!);
       log("Image uploaded");
-
-      if (_user == null) {
-        await getUser();
-      }
 
       try {
         encodedImage.delete();
@@ -98,16 +100,16 @@ class NewStoryViewModel extends BaseViewModel {
     String? secretMessage,
   }) async {
     try {
-      final receiverPort = ReceivePort();
+      final receivePort = ReceivePort();
       final args = <String, dynamic>{
-        "sendPort": receiverPort.sendPort,
+        "sendPort": receivePort.sendPort,
         "recipientPublicKey": recipientPublicKey,
         "secretMessage": secretMessage,
         "recipientId": recipientId,
         "imagePath": image.path,
       };
       await Isolate.spawn(_encodeImage, args);
-      final result = await receiverPort.first as TransferableTypedData;
+      final result = await receivePort.first as TransferableTypedData;
       final bytes = result.materialize().asInt8List();
 
       if (bytes.isEmpty) {
@@ -151,8 +153,6 @@ class NewStoryViewModel extends BaseViewModel {
 
       final encodedImageBytes = result?.readAsBytesSync();
 
-      print(result);
-
       Isolate.exit(
         sendPort,
         TransferableTypedData.fromList([
@@ -160,7 +160,6 @@ class NewStoryViewModel extends BaseViewModel {
         ]),
       );
     } catch (e) {
-      print(e);
       Isolate.exit(
         sendPort,
         TransferableTypedData.fromList([

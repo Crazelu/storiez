@@ -3,14 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/presentation/routes/routes.dart';
+import 'package:storiez/presentation/stores/user_store.dart';
 import 'package:storiez/presentation/view-models/base_view_model.dart';
+import 'package:storiez/utils/locator.dart';
 
 final homeViewModelProvider = ChangeNotifierProvider((_) => HomeViewModel());
 
 class HomeViewModel extends BaseViewModel {
+  late final UserStore _userStore = locator();
+
   HomeViewModel() {
-    getUser();
+    _addListeners();
+    _userStore.getUser();
     subscribeToStoriesStream();
+  }
+
+  void _addListeners() {
+    _user = _userStore.user.value;
+    notifyListeners();
+    _userStore.user.addListener(() {
+      _user = _userStore.user.value;
+      notifyListeners();
+    });
   }
 
   List<Story> _stories = [];
@@ -20,17 +34,8 @@ class HomeViewModel extends BaseViewModel {
 
   AppUser? _user;
   AppUser? get user {
-    if (_user == null) getUser();
+    if (_user == null) _userStore.getUser();
     return _user;
-  }
-
-  Future<void> getUser() async {
-    try {
-      _user = await storiezService.getUser(await localCache.getUserId());
-      notifyListeners();
-    } catch (e) {
-      handleError(e);
-    }
   }
 
   void subscribeToStoriesStream() {
@@ -68,6 +73,7 @@ class HomeViewModel extends BaseViewModel {
 
   @override
   void dispose() {
+    _user = null;
     _cancelStream();
     super.dispose();
   }
