@@ -1,4 +1,0 @@
-enum ApiErrorType {
-  unverifiedEmail,
-  unknown,
-}

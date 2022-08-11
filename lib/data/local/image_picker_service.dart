@@ -1,6 +1,6 @@
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:storiez/domain/models/api/error/api_error_response.dart';
+import 'package:storiez/domain/models/api/api_error_response.dart';
 import 'package:storiez/domain/models/asset_image.dart';
 import 'package:storiez/utils/utils.dart';
 

@@ -6,7 +6,7 @@ import 'package:steganograph/steganograph.dart';
 import 'package:storiez/data/local/__local.dart';
 import 'package:storiez/data/remote/image_service.dart';
 import 'package:storiez/data/remote/storiez_service.dart';
-import 'package:storiez/domain/models/api/error/api_error_response.dart';
+import 'package:storiez/domain/models/api/api_error_response.dart';
 import 'package:storiez/domain/models/story.dart';
 import 'package:storiez/domain/models/user.dart';
 import 'package:storiez/utils/utils.dart';
